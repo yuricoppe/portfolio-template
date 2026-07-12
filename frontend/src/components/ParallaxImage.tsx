@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useRafScroll } from "@/lib/motion";
 
 // Imagem de preenchimento com parallax sutil: a imagem é levemente
 // ampliada e desliza conforme o bloco atravessa o viewport.
@@ -18,45 +19,19 @@ export default function ParallaxImage({
   const wrapRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  useEffect(() => {
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+  useRafScroll(() => {
     const wrap = wrapRef.current;
     const img = imgRef.current;
-    if (reducedMotion || !wrap || !img) return;
-
-    let raf = 0;
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
-      const rect = wrap.getBoundingClientRect();
-      const vh = window.innerHeight;
-      if (rect.bottom < 0 || rect.top > vh) return;
-      // progresso de -1 (entrando por baixo) a 1 (saindo por cima)
-      const progress =
-        (rect.top + rect.height / 2 - vh / 2) / ((vh + rect.height) / 2);
-      const shift = -progress * strength;
-      img.style.transform = `translate3d(0, ${shift}%, 0) scale(${1 + strength / 45})`;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        raf = requestAnimationFrame(update);
-      }
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, [strength]);
+    if (!wrap || !img) return;
+    const rect = wrap.getBoundingClientRect();
+    const vh = window.innerHeight;
+    if (rect.bottom < 0 || rect.top > vh) return;
+    // progresso de -1 (entrando por baixo) a 1 (saindo por cima)
+    const progress =
+      (rect.top + rect.height / 2 - vh / 2) / ((vh + rect.height) / 2);
+    const shift = -progress * strength;
+    img.style.transform = `translate3d(0, ${shift}%, 0) scale(${1 + strength / 45})`;
+  });
 
   return (
     <div

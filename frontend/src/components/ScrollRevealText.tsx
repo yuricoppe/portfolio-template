@@ -1,69 +1,50 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { prefersReducedMotion, useRafScroll } from "@/lib/motion";
 
 // Texto que revela palavra por palavra conforme o scroll: as palavras
 // começam apagadas/desfocadas e ficam nítidas à medida que o bloco
 // atravessa o viewport (efeito scroll-linked, não one-shot).
+// Sem JavaScript o texto permanece visível (gating via html.js no CSS).
 export default function ScrollRevealText({
   lead,
   muted,
+  as: Tag = "h2",
   className = "",
   breakAfterLead = false,
 }: {
   lead: string;
   muted?: string;
+  as?: "h1" | "h2" | "h3" | "p";
   className?: string;
   breakAfterLead?: boolean;
 }) {
   const ref = useRef<HTMLHeadingElement>(null);
+  const lastRevealed = useRef(-1);
 
-  useEffect(() => {
+  useRafScroll(() => {
     const el = ref.current;
-    if (!el) return;
-    const words = Array.from(
-      el.querySelectorAll<HTMLElement>(".srt-word"),
+    if (!el || prefersReducedMotion()) return;
+    const words = Array.from(el.querySelectorAll<HTMLElement>(".srt-word"));
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // 0 quando o topo do bloco está a 90% do viewport,
+    // 1 quando o bloco chega a ~35% da tela
+    const progress = Math.min(
+      1,
+      Math.max(0, (vh * 0.9 - rect.top) / (vh * 0.55)),
     );
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      words.forEach((w) => w.classList.add("srt-word--on"));
-      return;
-    }
-
-    let raf = 0;
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // 0 quando o topo do bloco está a 90% do viewport,
-      // 1 quando o bloco chega a ~35% da tela
-      const progress = Math.min(
-        1,
-        Math.max(0, (vh * 0.9 - rect.top) / (vh * 0.55)),
-      );
-      const revealed = Math.floor(progress * (words.length + 2));
-      words.forEach((w, i) => {
-        w.classList.toggle("srt-word--on", i < revealed);
-      });
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        raf = requestAnimationFrame(update);
-      }
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
+    const revealed = Math.min(
+      words.length,
+      Math.floor(progress * (words.length + 2)),
+    );
+    if (revealed === lastRevealed.current) return;
+    lastRevealed.current = revealed;
+    words.forEach((w, i) => {
+      w.classList.toggle("srt-word--on", i < revealed);
+    });
+  });
 
   const renderWords = (text: string, mutedPart: boolean) =>
     text.split(" ").map((w, i) => (
@@ -77,10 +58,10 @@ export default function ScrollRevealText({
     ));
 
   return (
-    <h2 ref={ref} className={className} aria-label={`${lead} ${muted ?? ""}`}>
+    <Tag ref={ref} className={className} aria-label={`${lead} ${muted ?? ""}`}>
       {renderWords(lead, false)}
       {breakAfterLead && <br />}
       {muted ? renderWords(muted, true) : null}
-    </h2>
+    </Tag>
   );
 }

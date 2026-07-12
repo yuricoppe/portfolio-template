@@ -45,6 +45,7 @@ export default async function Home() {
       <div className="box-border">
         <div className="sticky top-0 px-page pb-24 pt-24 md:pb-[120px] md:pt-[130px]">
           <ScrollRevealText
+            as="h1"
             lead={home.statementLead}
             muted={home.statementMuted}
             breakAfterLead

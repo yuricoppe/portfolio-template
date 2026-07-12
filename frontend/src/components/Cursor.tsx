@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { hasFinePointer, prefersReducedMotion } from "@/lib/motion";
 
 // Cursor customizado: ponto que segue o mouse + anel com leve atraso.
 // Ativo apenas em dispositivos com ponteiro fino; respeita reduced-motion.
@@ -9,11 +10,7 @@ export default function Cursor() {
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const finePointer = window.matchMedia("(pointer: fine)").matches;
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (!finePointer || reducedMotion) return;
+    if (!hasFinePointer() || prefersReducedMotion()) return;
 
     const dot = dotRef.current;
     const ring = ringRef.current;

@@ -15,8 +15,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="h-full antialiased">
+    // suppressHydrationWarning: o script inline abaixo adiciona a classe
+    // "js" ao <html> antes da hidratação, o que é intencional.
+    <html lang="pt-BR" className="h-full antialiased" suppressHydrationWarning>
       <body className="flex min-h-full flex-col">
+        {/* Marca html.js antes do primeiro paint: os estados iniciais
+            ocultos das animações só se aplicam quando o JS está ativo,
+            então sem JavaScript todo o conteúdo permanece visível. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         {children}
         <Cursor />
         <GlowTracker />

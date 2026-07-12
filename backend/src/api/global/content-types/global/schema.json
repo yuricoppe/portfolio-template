@@ -31,6 +31,24 @@
       "type": "component",
       "repeatable": true,
       "component": "shared.social-link"
+    },
+    "ctaLead": {
+      "type": "string"
+    },
+    "ctaMuted": {
+      "type": "string"
+    },
+    "contactTitleLead": {
+      "type": "string"
+    },
+    "contactTitleMuted": {
+      "type": "text"
+    },
+    "projectsTitleLead": {
+      "type": "string"
+    },
+    "projectsTitleMuted": {
+      "type": "text"
     }
   }
 }

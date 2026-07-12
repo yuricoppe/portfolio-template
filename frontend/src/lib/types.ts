@@ -47,6 +47,12 @@ export interface Global {
   location: string;
   locationNote: string;
   socials: SocialLink[];
+  ctaLead: string;
+  ctaMuted: string;
+  contactTitleLead: string;
+  contactTitleMuted: string;
+  projectsTitleLead: string;
+  projectsTitleMuted: string;
 }
 
 export interface HomePage {

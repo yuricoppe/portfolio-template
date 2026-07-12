@@ -97,6 +97,15 @@ export async function getGlobal(): Promise<Global> {
       label: s.label ?? "",
       url: s.url ?? "#",
     })),
+    ctaLead: data.ctaLead ?? fallbackGlobal.ctaLead,
+    ctaMuted: data.ctaMuted ?? fallbackGlobal.ctaMuted,
+    contactTitleLead: data.contactTitleLead ?? fallbackGlobal.contactTitleLead,
+    contactTitleMuted:
+      data.contactTitleMuted ?? fallbackGlobal.contactTitleMuted,
+    projectsTitleLead:
+      data.projectsTitleLead ?? fallbackGlobal.projectsTitleLead,
+    projectsTitleMuted:
+      data.projectsTitleMuted ?? fallbackGlobal.projectsTitleMuted,
   };
 }
 

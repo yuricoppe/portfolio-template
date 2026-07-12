@@ -15,6 +15,13 @@ export const fallbackGlobal: Global = {
     { label: "LinkedIn", url: "#" },
     { label: "Behance", url: "#" },
   ],
+  ctaLead: "Vamos conversar.",
+  ctaMuted: "Adoraríamos ouvir sua ideia.",
+  contactTitleLead: "Vamos conversar.",
+  contactTitleMuted:
+    "Conte sobre o seu projeto — respondemos em até dois dias úteis.",
+  projectsTitleLead: "Projetos.",
+  projectsTitleMuted: "Marcas, produtos e plataformas que já saíram do papel.",
 };
 
 export const fallbackHome: HomePage = {

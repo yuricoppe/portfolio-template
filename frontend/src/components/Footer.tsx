@@ -9,8 +9,8 @@ export default function Footer({ global }: { global: Global }) {
       <Spotlight color="rgba(61, 67, 184, 0.08)" size={560} />
       <Reveal>
         <h2 className="max-w-5xl text-4xl font-medium leading-[1.15] tracking-tight md:text-[56px]">
-          Vamos conversar.{" "}
-          <span className="text-[#9a9a9a]">Adoraríamos ouvir sua ideia.</span>
+          {global.ctaLead}{" "}
+          <span className="text-[#9a9a9a]">{global.ctaMuted}</span>
         </h2>
       </Reveal>
       <Link

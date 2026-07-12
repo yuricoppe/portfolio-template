@@ -521,9 +521,13 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    contactTitleLead: Schema.Attribute.String;
+    contactTitleMuted: Schema.Attribute.Text;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    ctaLead: Schema.Attribute.String;
+    ctaMuted: Schema.Attribute.String;
     email: Schema.Attribute.Email;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -533,6 +537,8 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     location: Schema.Attribute.String;
     locationNote: Schema.Attribute.Text;
+    projectsTitleLead: Schema.Attribute.String;
+    projectsTitleMuted: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     siteName: Schema.Attribute.String & Schema.Attribute.DefaultTo<'COLATIVO'>;
     socials: Schema.Attribute.Component<'shared.social-link', true>;

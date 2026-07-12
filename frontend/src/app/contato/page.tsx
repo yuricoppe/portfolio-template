@@ -18,9 +18,9 @@ export default async function Contato() {
 
       <div className="px-page pb-16 pt-20 md:pb-[90px] md:pt-[110px]">
         <h1 className="max-w-[1000px] text-3xl font-medium leading-[1.16] tracking-tight md:text-[60px]">
-          <BlurText text="Vamos conversar." stagger={90} />{" "}
+          <BlurText text={global.contactTitleLead} stagger={90} />{" "}
           <BlurText
-            text="Conte sobre o seu projeto — respondemos em até dois dias úteis."
+            text={global.contactTitleMuted}
             delay={220}
             stagger={30}
             className="text-muted"

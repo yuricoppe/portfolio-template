@@ -88,16 +88,20 @@ textarea:focus {
   border-color: #fff;
 }
 
-/* ---------- Reveal on scroll ---------- */
+/* ---------- Reveal on scroll ----------
+   Estados ocultos só se aplicam com JS ativo (html.js, ver layout.tsx):
+   sem JavaScript todo o conteúdo permanece visível no SSR. */
 
 .reveal {
-  opacity: 0;
-  transform: translateY(28px);
   transition:
     opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal.is-revealed {
+.js .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.js .reveal.is-revealed {
   opacity: 1;
   transform: none;
 }
@@ -164,15 +168,17 @@ textarea:focus {
 .blur-word {
   display: inline-block;
   white-space: pre-wrap;
-  opacity: 0;
-  filter: blur(10px);
-  transform: translateY(0.35em);
   transition:
     opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.7s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.blur-word--in {
+.js .blur-word {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(0.35em);
+}
+.js .blur-word--in {
   opacity: 1;
   filter: blur(0);
   transform: none;
@@ -181,25 +187,32 @@ textarea:focus {
 /* ---------- Scroll reveal: palavras nítidas conforme o scroll ---------- */
 
 .srt-word {
-  opacity: 0.14;
-  filter: blur(5px);
   transition:
     opacity 0.5s ease,
-    filter 0.5s ease,
-    color 0.5s ease;
+    filter 0.5s ease;
 }
-.srt-word--on {
+.srt-word--muted {
+  color: var(--color-muted);
+}
+.js .srt-word {
+  opacity: 0.14;
+  filter: blur(5px);
+}
+.js .srt-word--on {
   opacity: 1;
   filter: blur(0);
-}
-.srt-word--muted.srt-word--on {
-  color: var(--color-muted);
 }
 
 /* ---------- Border glow: brilho na borda seguindo o cursor ---------- */
 
-.glow-border {
-  position: relative;
+/* Fallback de posição com especificidade zero e dentro da layer de
+   utilities: garante um containing block para o ::before sem nunca
+   sobrepor utilitários como `absolute`/`fixed` (CSS fora de layer
+   venceria a cascata sobre qualquer utilitário do Tailwind). */
+@layer utilities {
+  :where(.glow-border) {
+    position: relative;
+  }
 }
 .glow-border::before {
   content: "";
@@ -273,7 +286,10 @@ textarea:focus {
   }
   .reveal,
   .blur-word,
-  .srt-word {
+  .srt-word,
+  .js .reveal,
+  .js .blur-word,
+  .js .srt-word {
     opacity: 1;
     transform: none;
     filter: none;

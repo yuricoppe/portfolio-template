@@ -19,9 +19,9 @@ export default async function Projetos() {
       <div className="box-border">
         <div className="sticky top-0 px-page pb-16 pt-20 md:pb-[90px] md:pt-[110px]">
           <h1 className="max-w-[1000px] text-3xl font-medium leading-[1.18] tracking-tight md:text-[56px]">
-            <BlurText text="Projetos." stagger={90} />{" "}
+            <BlurText text={global.projectsTitleLead} stagger={90} />{" "}
             <BlurText
-              text="Marcas, produtos e plataformas que já saíram do papel."
+              text={global.projectsTitleMuted}
               delay={200}
               stagger={35}
               className="text-muted"

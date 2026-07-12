@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useInView } from "@/lib/motion";
 
 // Título que entra palavra por palavra: blur -> nítido, com stagger.
-// Anima quando entra no viewport (ou no mount, para heros).
+// O estado escondido só existe quando o JS está ativo (html.js no CSS),
+// então o texto permanece visível em SSR sem JavaScript.
 export default function BlurText({
   text,
   as: Tag = "span",
@@ -17,29 +18,7 @@ export default function BlurText({
   delay?: number;
   stagger?: number;
 }) {
-  const ref = useRef<HTMLElement>(null);
-  const [on, setOn] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setOn(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setOn(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
+  const [ref, inView] = useInView<HTMLElement>();
   const words = text.split(" ");
 
   return (
@@ -48,11 +27,11 @@ export default function BlurText({
         <span
           key={i}
           aria-hidden
-          className={`blur-word ${on ? "blur-word--in" : ""}`}
+          className={`blur-word ${inView ? "blur-word--in" : ""}`}
           style={{ transitionDelay: `${delay + i * stagger}ms` }}
         >
           {w}
-          {i < words.length - 1 ? " " : ""}
+          {i < words.length - 1 ? " " : ""}
         </span>
       ))}
     </Tag>

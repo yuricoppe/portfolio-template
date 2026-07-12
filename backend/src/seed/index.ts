@@ -66,6 +66,24 @@ export default async function seed(strapi: Core.Strapi) {
     .documents('api::project.project')
     .count({});
   const globalDoc = await strapi.documents('api::global.global').findFirst();
+
+  // Backfill de campos adicionados após o seed original
+  if (globalDoc && globalDoc.ctaLead == null) {
+    await strapi.documents('api::global.global').update({
+      documentId: globalDoc.documentId,
+      data: {
+        ctaLead: 'Vamos conversar.',
+        ctaMuted: 'Adoraríamos ouvir sua ideia.',
+        contactTitleLead: 'Vamos conversar.',
+        contactTitleMuted:
+          'Conte sobre o seu projeto — respondemos em até dois dias úteis.',
+        projectsTitleLead: 'Projetos.',
+        projectsTitleMuted:
+          'Marcas, produtos e plataformas que já saíram do papel.',
+      },
+    });
+  }
+
   if (projectCount > 0 && globalDoc) return;
 
   strapi.log.info('Seeding Colativo demo content…');
@@ -100,6 +118,14 @@ export default async function seed(strapi: Core.Strapi) {
           { label: 'LinkedIn', url: '#' },
           { label: 'Behance', url: '#' },
         ],
+        ctaLead: 'Vamos conversar.',
+        ctaMuted: 'Adoraríamos ouvir sua ideia.',
+        contactTitleLead: 'Vamos conversar.',
+        contactTitleMuted:
+          'Conte sobre o seu projeto — respondemos em até dois dias úteis.',
+        projectsTitleLead: 'Projetos.',
+        projectsTitleMuted:
+          'Marcas, produtos e plataformas que já saíram do papel.',
       },
     });
   }
