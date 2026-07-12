@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import ParallaxImage from "@/components/ParallaxImage";
+import Reveal from "@/components/Reveal";
 import { getGlobal, getProject, getProjects } from "@/lib/api";
 
 export async function generateMetadata({
@@ -44,11 +46,7 @@ export default async function ProjetoInterna({
         style={{ height: "88vh", background: project.gradient }}
       >
         {project.coverUrl && (
-          <img
-            src={project.coverUrl}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <ParallaxImage src={project.coverUrl} strength={4} />
         )}
         <Header overlay siteName={global.siteName} />
         <div className="absolute bottom-10 left-5 md:left-11">
@@ -63,20 +61,22 @@ export default async function ProjetoInterna({
 
       {/* Facts */}
       <div className="grid grid-cols-2 gap-8 border-b border-line px-page py-14 text-[15px] md:grid-cols-4">
-        {facts.map((f) => (
-          <div key={f.label}>
+        {facts.map((f, i) => (
+          <Reveal key={f.label} delay={i * 80}>
             <div className="mb-2 text-faint">{f.label}</div>
             <div>{f.value}</div>
-          </div>
+          </Reveal>
         ))}
       </div>
 
       {/* Statement */}
       <div className="px-page py-24 md:py-[130px]">
-        <h2 className="max-w-[1050px] text-3xl font-medium leading-[1.25] tracking-tight md:text-[44px]">
-          {project.statement}{" "}
-          <span className="text-muted">{project.statementMuted}</span>
-        </h2>
+        <Reveal>
+          <h2 className="max-w-[1050px] text-3xl font-medium leading-[1.25] tracking-tight md:text-[44px]">
+            {project.statement}{" "}
+            <span className="text-muted">{project.statementMuted}</span>
+          </h2>
+        </Reveal>
       </div>
 
       {/* Full-bleed image 1 */}
@@ -84,22 +84,22 @@ export default async function ProjetoInterna({
 
       {/* Challenge / solution */}
       <div className="grid grid-cols-1 gap-14 px-page py-24 md:grid-cols-2 md:gap-20 md:py-[130px]">
-        <div>
+        <Reveal>
           <div className="mb-5 text-sm tracking-[0.08em] text-faint">
             O DESAFIO
           </div>
           <p className="text-lg leading-[1.6] text-soft md:text-[19px]">
             {project.challenge}
           </p>
-        </div>
-        <div>
+        </Reveal>
+        <Reveal delay={120}>
           <div className="mb-5 text-sm tracking-[0.08em] text-faint">
             A SOLUÇÃO
           </div>
           <p className="text-lg leading-[1.6] text-soft md:text-[19px]">
             {project.solution}
           </p>
-        </div>
+        </Reveal>
       </div>
 
       {/* Two-up gallery */}
@@ -108,16 +108,10 @@ export default async function ProjetoInterna({
           {[g1, g2].map((g, i) => (
             <div
               key={i}
-              className="relative h-[420px] md:h-[620px]"
+              className="relative h-[420px] overflow-hidden md:h-[620px]"
               style={{ background: g.gradient }}
             >
-              {g.url && (
-                <img
-                  src={g.url}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              )}
+              {g.url && <ParallaxImage src={g.url} strength={5} />}
             </div>
           ))}
         </div>
@@ -126,13 +120,15 @@ export default async function ProjetoInterna({
       {/* Quote */}
       {project.quote && (
         <div className="px-page py-24 text-center md:py-[150px]">
-          <p className="mx-auto max-w-[880px] text-2xl font-medium leading-[1.3] tracking-tight [text-wrap:balance] md:text-[40px]">
-            {project.quote}{" "}
-            <span className="text-muted">{project.quoteMuted}</span>
-          </p>
-          <div className="mt-7 text-[15px] text-faint">
-            {project.quoteAuthor}
-          </div>
+          <Reveal>
+            <p className="mx-auto max-w-[880px] text-2xl font-medium leading-[1.3] tracking-tight [text-wrap:balance] md:text-[40px]">
+              {project.quote}{" "}
+              <span className="text-muted">{project.quoteMuted}</span>
+            </p>
+            <div className="mt-7 text-[15px] text-faint">
+              {project.quoteAuthor}
+            </div>
+          </Reveal>
         </div>
       )}
 
@@ -142,13 +138,13 @@ export default async function ProjetoInterna({
       {/* Metrics */}
       {project.metrics.length > 0 && (
         <div className="grid grid-cols-1 gap-10 border-b border-line px-page py-20 sm:grid-cols-3 sm:gap-8 md:py-[110px]">
-          {project.metrics.map((m) => (
-            <div key={m.label}>
+          {project.metrics.map((m, i) => (
+            <Reveal key={m.label} delay={i * 100}>
               <div className="text-4xl font-medium tracking-tight md:text-[56px]">
                 {m.value}
               </div>
               <div className="mt-2.5 text-[15px] text-muted">{m.label}</div>
-            </div>
+            </Reveal>
           ))}
         </div>
       )}
@@ -157,15 +153,18 @@ export default async function ProjetoInterna({
       {next && next.slug !== project.slug && (
         <Link
           href={`/projetos/${next.slug}`}
-          className="relative block min-h-[380px] overflow-hidden text-white md:min-h-[480px]"
+          className="group relative block min-h-[380px] overflow-hidden text-white md:min-h-[480px]"
           style={{ height: "66vh", background: next.gradient }}
         >
           <div className="absolute left-5 top-11 text-[15px] text-white/65 md:left-11">
             Próximo projeto
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="px-5 text-center text-4xl font-medium tracking-tighter md:text-[64px]">
-              {next.title} →
+            <span className="flex items-baseline gap-3 px-5 text-center text-4xl font-medium tracking-tighter md:text-[64px]">
+              {next.title}
+              <span className="inline-block transition-transform duration-500 ease-out group-hover:translate-x-3">
+                →
+              </span>
             </span>
           </div>
         </Link>
@@ -179,16 +178,10 @@ export default async function ProjetoInterna({
 function FullBleed({ image }: { image: { url: string; gradient: string } }) {
   return (
     <div
-      className="relative min-h-[380px] md:min-h-[560px]"
+      className="relative min-h-[380px] overflow-hidden md:min-h-[560px]"
       style={{ height: "78vh", background: image.gradient }}
     >
-      {image.url && (
-        <img
-          src={image.url}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      )}
+      {image.url && <ParallaxImage src={image.url} strength={7} />}
     </div>
   );
 }

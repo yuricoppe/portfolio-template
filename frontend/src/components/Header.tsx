@@ -42,11 +42,12 @@ export default function Header({
           <Link
             key={l.href}
             href={l.href}
-            className={
+            data-active={pathname.startsWith(l.href)}
+            className={`nav-link transition-colors ${
               pathname.startsWith(l.href)
-                ? "border-b border-white pb-0.5 text-white"
-                : "text-white/85 transition-colors hover:text-white"
-            }
+                ? "text-white"
+                : "text-white/85 hover:text-white"
+            }`}
           >
             {l.label}
           </Link>

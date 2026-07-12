@@ -56,9 +56,12 @@ export default async function Contato() {
                   href={s.url}
                   target={s.url.startsWith("http") ? "_blank" : undefined}
                   rel="noreferrer"
-                  className="text-soft transition-colors hover:text-white"
+                  className="group flex w-fit items-center gap-1 text-soft transition-colors hover:text-white"
                 >
-                  {s.label} ↗
+                  {s.label}
+                  <span className="inline-block transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+                    ↗
+                  </span>
                 </a>
               ))}
             </div>

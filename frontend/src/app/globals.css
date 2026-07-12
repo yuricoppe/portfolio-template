@@ -40,3 +40,140 @@ textarea:focus {
   outline: none;
   border-color: #888;
 }
+
+/* ---------- Cursor customizado ---------- */
+
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button,
+.has-custom-cursor input,
+.has-custom-cursor textarea,
+.has-custom-cursor label {
+  cursor: none;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  mix-blend-mode: difference;
+}
+
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.3s ease;
+}
+.cursor-dot--active {
+  width: 4px;
+  height: 4px;
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease,
+    border-color 0.3s ease;
+}
+.cursor-ring--active {
+  width: 52px;
+  height: 52px;
+  border-color: #fff;
+}
+
+/* ---------- Reveal on scroll ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Links do menu com sublinhado deslizante ---------- */
+
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* ---------- Detalhes ---------- */
+
+@keyframes drift-down {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.5;
+  }
+}
+.hero-arrow {
+  animation: drift-down 2.4s ease-in-out infinite;
+}
+
+/* linha da lista de serviços: seta aparece e o item desliza no hover */
+.service-row {
+  transition: padding-left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.service-row .service-arrow {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.service-row:hover {
+  padding-left: 12px;
+}
+.service-row:hover .service-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero-arrow {
+    animation: none;
+  }
+  .service-row,
+  .service-row .service-arrow,
+  .nav-link::after {
+    transition: none;
+  }
+}

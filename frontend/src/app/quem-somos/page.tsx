@@ -1,5 +1,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import ParallaxImage from "@/components/ParallaxImage";
+import Reveal from "@/components/Reveal";
 import { getAboutPage, getGlobal } from "@/lib/api";
 
 export const metadata = {
@@ -30,24 +32,24 @@ export default async function QuemSomos() {
         }}
       >
         {about.teamImageUrl && (
-          <img
-            src={about.teamImageUrl}
-            alt="Equipe Colativo"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <ParallaxImage src={about.teamImageUrl} alt="Equipe Colativo" strength={6} />
         )}
       </div>
 
       {/* Manifesto */}
       <div className="grid grid-cols-1 gap-12 px-page py-24 md:grid-cols-2 md:gap-20 md:py-[140px]">
-        <h2 className="text-3xl font-medium leading-[1.25] tracking-tight md:text-[40px]">
-          {about.manifestoLead}
-          <br />
-          <span className="text-muted">{about.manifestoMuted}</span>
-        </h2>
+        <Reveal>
+          <h2 className="text-3xl font-medium leading-[1.25] tracking-tight md:text-[40px]">
+            {about.manifestoLead}
+            <br />
+            <span className="text-muted">{about.manifestoMuted}</span>
+          </h2>
+        </Reveal>
         <div className="flex flex-col gap-7 text-lg leading-[1.65] text-soft md:text-[19px]">
           {about.paragraphs.map((p, i) => (
-            <p key={i}>{p}</p>
+            <Reveal key={i} delay={i * 110}>
+              <p>{p}</p>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -59,20 +61,23 @@ export default async function QuemSomos() {
         </div>
         <div className="flex flex-col">
           {about.steps.map((s, i) => (
-            <div
-              key={s.number}
-              className={`grid grid-cols-1 items-baseline gap-3 border-t border-line py-9 md:grid-cols-[80px_320px_1fr] md:gap-10 ${
-                i === about.steps.length - 1 ? "border-b border-line" : ""
-              }`}
-            >
-              <span className="text-[15px] text-[#666]">{s.number}</span>
-              <span className="text-2xl font-medium tracking-tight md:text-[26px]">
-                {s.title}
-              </span>
-              <p className="text-[17px] leading-[1.6] text-[#9a9a9a]">
-                {s.description}
-              </p>
-            </div>
+            <Reveal key={s.number} delay={i * 100}>
+              <div
+                className={`group grid grid-cols-1 items-baseline gap-3 border-t border-line py-9 transition-colors duration-500 hover:bg-white/[0.02] md:grid-cols-[80px_320px_1fr] md:gap-10 ${
+                  i === about.steps.length - 1 ? "border-b border-line" : ""
+                }`}
+              >
+                <span className="text-[15px] text-[#666] transition-colors duration-500 group-hover:text-white">
+                  {s.number}
+                </span>
+                <span className="text-2xl font-medium tracking-tight md:text-[26px]">
+                  {s.title}
+                </span>
+                <p className="text-[17px] leading-[1.6] text-[#9a9a9a] transition-colors duration-500 group-hover:text-soft">
+                  {s.description}
+                </p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
