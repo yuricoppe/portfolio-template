@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #050505;
+  --color-paper: #ffffff;
+  --color-muted: #8b8b8b;
+  --color-soft: #c9c9c9;
+  --color-faint: #777777;
+  --color-line: #1c1c1c;
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-ink);
+  color: #fff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Side padding used across every section: 20px on mobile, 44px from md up */
+@utility px-page {
+  padding-left: 20px;
+  padding-right: 20px;
+  @media (width >= 48rem) {
+    padding-left: 44px;
+    padding-right: 44px;
+  }
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #888;
+}

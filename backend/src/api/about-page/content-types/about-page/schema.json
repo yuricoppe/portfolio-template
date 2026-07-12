@@ -1,0 +1,40 @@
+{
+  "kind": "singleType",
+  "collectionName": "about_pages",
+  "info": {
+    "singularName": "about-page",
+    "pluralName": "about-pages",
+    "displayName": "Quem Somos",
+    "description": "Conteúdo da página Quem Somos"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "titleLead": {
+      "type": "text"
+    },
+    "titleMuted": {
+      "type": "text"
+    },
+    "manifestoLead": {
+      "type": "text"
+    },
+    "manifestoMuted": {
+      "type": "text"
+    },
+    "paragraphs": {
+      "type": "text"
+    },
+    "teamImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "steps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.process-step"
+    }
+  }
+}

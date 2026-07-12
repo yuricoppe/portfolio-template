@@ -1,0 +1,36 @@
+{
+  "kind": "singleType",
+  "collectionName": "globals",
+  "info": {
+    "singularName": "global",
+    "pluralName": "globals",
+    "displayName": "Global",
+    "description": "Informações gerais do site"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "siteName": {
+      "type": "string",
+      "default": "COLATIVO"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "location": {
+      "type": "string"
+    },
+    "locationNote": {
+      "type": "text"
+    },
+    "socials": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.social-link"
+    }
+  }
+}
