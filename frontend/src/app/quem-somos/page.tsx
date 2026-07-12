@@ -1,7 +1,9 @@
+import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ParallaxImage from "@/components/ParallaxImage";
 import Reveal from "@/components/Reveal";
+import ScrollRevealText from "@/components/ScrollRevealText";
 import { getAboutPage, getGlobal } from "@/lib/api";
 
 export const metadata = {
@@ -17,8 +19,13 @@ export default async function QuemSomos() {
 
       <div className="px-page pb-24 pt-20 md:pb-[140px] md:pt-[120px]">
         <h1 className="max-w-[1080px] text-3xl font-medium leading-[1.16] tracking-tight md:text-[60px]">
-          {about.titleLead}{" "}
-          <span className="text-muted">{about.titleMuted}</span>
+          <BlurText text={about.titleLead} stagger={90} />{" "}
+          <BlurText
+            text={about.titleMuted}
+            delay={250}
+            stagger={26}
+            className="text-muted"
+          />
         </h1>
       </div>
 
@@ -38,13 +45,11 @@ export default async function QuemSomos() {
 
       {/* Manifesto */}
       <div className="grid grid-cols-1 gap-12 px-page py-24 md:grid-cols-2 md:gap-20 md:py-[140px]">
-        <Reveal>
-          <h2 className="text-3xl font-medium leading-[1.25] tracking-tight md:text-[40px]">
-            {about.manifestoLead}
-            <br />
-            <span className="text-muted">{about.manifestoMuted}</span>
-          </h2>
-        </Reveal>
+        <ScrollRevealText
+          lead={about.manifestoLead}
+          muted={about.manifestoMuted}
+          className="text-3xl font-medium leading-[1.25] tracking-tight md:text-[40px]"
+        />
         <div className="flex flex-col gap-7 text-lg leading-[1.65] text-soft md:text-[19px]">
           {about.paragraphs.map((p, i) => (
             <Reveal key={i} delay={i * 110}>

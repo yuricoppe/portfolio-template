@@ -1,8 +1,8 @@
 import Link from "next/link";
+import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ParallaxImage from "@/components/ParallaxImage";
-import Reveal from "@/components/Reveal";
 import { getGlobal, getProjects } from "@/lib/api";
 
 export const metadata = {
@@ -18,14 +18,15 @@ export default async function Projetos() {
 
       <div className="box-border">
         <div className="sticky top-0 px-page pb-16 pt-20 md:pb-[90px] md:pt-[110px]">
-          <Reveal>
-            <h1 className="max-w-[1000px] text-3xl font-medium leading-[1.18] tracking-tight md:text-[56px]">
-              Projetos.{" "}
-              <span className="text-muted">
-                Marcas, produtos e plataformas que já saíram do papel.
-              </span>
-            </h1>
-          </Reveal>
+          <h1 className="max-w-[1000px] text-3xl font-medium leading-[1.18] tracking-tight md:text-[56px]">
+            <BlurText text="Projetos." stagger={90} />{" "}
+            <BlurText
+              text="Marcas, produtos e plataformas que já saíram do papel."
+              delay={200}
+              stagger={35}
+              className="text-muted"
+            />
+          </h1>
         </div>
 
         {projects.map((p, i) => (
@@ -49,7 +50,7 @@ export default async function Projetos() {
                 {p.category} · {p.year}
               </div>
             </div>
-            <div className="absolute bottom-9 right-5 hidden rounded-[10px] bg-white/14 px-6 py-3 text-sm backdrop-blur-md transition-all duration-300 group-hover:bg-white/28 sm:block md:right-11">
+            <div className="glow-border absolute bottom-9 right-5 hidden rounded-[10px] bg-white/14 px-6 py-3 text-sm backdrop-blur-md transition-all duration-300 group-hover:bg-white/28 sm:block md:right-11">
               Ver case
             </div>
           </Link>

@@ -1,8 +1,11 @@
 import Link from "next/link";
+import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
+import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
 import ParallaxImage from "@/components/ParallaxImage";
 import Reveal from "@/components/Reveal";
+import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getHomePage, getProjects } from "@/lib/api";
 import type { Project } from "@/lib/types";
 
@@ -29,24 +32,24 @@ export default async function Home() {
       >
         <ParallaxImage src="/img/hero.svg" strength={4} />
         <Header overlay siteName={global.siteName} />
-        <div className="absolute bottom-10 left-5 max-w-[80%] text-2xl font-medium tracking-tight md:left-11 md:text-[32px]">
-          {home.heroTitle}
+        <div className="absolute bottom-10 left-5 z-20 max-w-[80%] text-2xl font-medium tracking-tight md:left-11 md:text-[32px]">
+          <BlurText text={home.heroTitle} delay={200} stagger={80} />
         </div>
-        <div className="hero-arrow absolute bottom-10 right-5 text-xl md:right-11">
+        <div className="hero-arrow absolute bottom-10 right-5 z-20 text-xl md:right-11">
           ↓
         </div>
+        <GradualBlur position="bottom" height={110} />
       </div>
 
       {/* Statement + sticky featured cases */}
       <div className="box-border">
         <div className="sticky top-0 px-page pb-24 pt-24 md:pb-[120px] md:pt-[130px]">
-          <Reveal>
-            <h1 className="max-w-[1000px] text-3xl font-medium leading-[1.18] tracking-tight md:text-[56px]">
-              {home.statementLead}
-              <br />
-              <span className="text-muted">{home.statementMuted}</span>
-            </h1>
-          </Reveal>
+          <ScrollRevealText
+            lead={home.statementLead}
+            muted={home.statementMuted}
+            breakAfterLead
+            className="max-w-[1000px] text-3xl font-medium leading-[1.18] tracking-tight md:text-[56px]"
+          />
         </div>
         {featured.map((p) => (
           <FeaturedCard key={p.slug} project={p} />
@@ -74,7 +77,7 @@ export default async function Home() {
       <div className="flex justify-center px-page pt-14">
         <Link
           href="/projetos"
-          className="rounded-[10px] bg-white/10 px-7 py-3.5 text-[15px] text-white transition-all duration-300 hover:bg-white/20 hover:px-9"
+          className="glow-border rounded-[10px] bg-white/10 px-7 py-3.5 text-[15px] text-white transition-all duration-300 hover:bg-white/20 hover:px-9"
         >
           Ver todos os projetos
         </Link>
@@ -131,7 +134,7 @@ function FeaturedCard({ project }: { project: Project }) {
           {project.category}
         </div>
       </div>
-      <div className="absolute bottom-9 right-5 hidden rounded-[10px] bg-white/14 px-6 py-3 text-sm backdrop-blur-md transition-all duration-300 group-hover:bg-white/28 sm:block md:right-11">
+      <div className="glow-border absolute bottom-9 right-5 hidden rounded-[10px] bg-white/14 px-6 py-3 text-sm backdrop-blur-md transition-all duration-300 group-hover:bg-white/28 sm:block md:right-11">
         Ver case
       </div>
     </Link>

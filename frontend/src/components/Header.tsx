@@ -54,7 +54,7 @@ export default function Header({
         ))}
         <Link
           href="/contato"
-          className="rounded-[10px] bg-white/14 px-[22px] py-3 text-white backdrop-blur-md transition-colors hover:bg-white/24"
+          className="glow-border rounded-[10px] bg-white/14 px-[22px] py-3 text-white backdrop-blur-md transition-colors hover:bg-white/24"
         >
           Contato
         </Link>
@@ -76,26 +76,23 @@ export default function Header({
         />
       </button>
 
-      {/* mobile menu */}
+      {/* mobile menu — itens entram escalonados, com índice */}
       {open && (
-        <div className="absolute inset-x-0 top-full z-30 flex flex-col gap-1 bg-[#0a0a0a]/95 px-page pb-8 pt-4 backdrop-blur-xl md:hidden">
-          {links.map((l) => (
+        <div className="menu-panel absolute inset-x-0 top-full z-30 flex flex-col bg-[#0a0a0a]/95 px-page pb-10 pt-4 backdrop-blur-xl md:hidden">
+          {[...links, { href: "/contato", label: "Contato" }].map((l, i) => (
             <Link
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="py-3 text-2xl font-medium text-white"
+              className="menu-item flex items-baseline gap-4 border-b border-line py-4 text-3xl font-medium text-white last:border-b-0"
+              style={{ animationDelay: `${80 + i * 70}ms` }}
             >
+              <span className="text-sm font-normal text-faint">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               {l.label}
             </Link>
           ))}
-          <Link
-            href="/contato"
-            onClick={() => setOpen(false)}
-            className="py-3 text-2xl font-medium text-white"
-          >
-            Contato
-          </Link>
         </div>
       )}
     </header>

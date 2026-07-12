@@ -87,7 +87,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={status === "sending" || status === "sent"}
-          className="cursor-pointer rounded-[10px] border-0 bg-white px-[34px] py-4 text-[15px] font-medium text-[#0a0a0a] transition-colors hover:bg-[#d9d9d9] disabled:cursor-default disabled:hover:bg-white"
+          className="glow-border glow-border--dark cursor-pointer rounded-[10px] border-0 bg-white px-[34px] py-4 text-[15px] font-medium text-[#0a0a0a] transition-colors hover:bg-[#d9d9d9] disabled:cursor-default disabled:hover:bg-white"
         >
           {label}
         </button>

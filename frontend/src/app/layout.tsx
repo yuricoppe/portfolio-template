@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Cursor from "@/components/Cursor";
+import GlowTracker from "@/components/GlowTracker";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         {children}
         <Cursor />
+        <GlowTracker />
       </body>
     </html>
   );

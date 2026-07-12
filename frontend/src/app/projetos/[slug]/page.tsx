@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
+import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
 import ParallaxImage from "@/components/ParallaxImage";
 import Reveal from "@/components/Reveal";
+import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getProject, getProjects } from "@/lib/api";
 
 export async function generateMetadata({
@@ -49,14 +52,19 @@ export default async function ProjetoInterna({
           <ParallaxImage src={project.coverUrl} strength={4} />
         )}
         <Header overlay siteName={global.siteName} />
-        <div className="absolute bottom-10 left-5 md:left-11">
+        <div className="absolute bottom-10 left-5 z-20 md:left-11">
           <div className="mb-3.5 text-[15px] text-white/65">
             {project.category}
           </div>
-          <h1 className="text-5xl font-medium leading-none tracking-tighter md:text-[84px]">
-            {project.title}
-          </h1>
+          <BlurText
+            as="h1"
+            text={project.title}
+            delay={150}
+            stagger={120}
+            className="text-5xl font-medium leading-none tracking-tighter md:text-[84px]"
+          />
         </div>
+        <GradualBlur position="bottom" height={100} />
       </div>
 
       {/* Facts */}
@@ -71,12 +79,11 @@ export default async function ProjetoInterna({
 
       {/* Statement */}
       <div className="px-page py-24 md:py-[130px]">
-        <Reveal>
-          <h2 className="max-w-[1050px] text-3xl font-medium leading-[1.25] tracking-tight md:text-[44px]">
-            {project.statement}{" "}
-            <span className="text-muted">{project.statementMuted}</span>
-          </h2>
-        </Reveal>
+        <ScrollRevealText
+          lead={project.statement}
+          muted={project.statementMuted}
+          className="max-w-[1050px] text-3xl font-medium leading-[1.25] tracking-tight md:text-[44px]"
+        />
       </div>
 
       {/* Full-bleed image 1 */}
