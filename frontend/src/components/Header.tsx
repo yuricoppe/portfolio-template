@@ -108,9 +108,8 @@ export default function Header({
           </div>
         )}
         <div
-          className={`relative flex items-center justify-between px-page py-6 transition-colors duration-300 md:py-8 ${
-            onLight && !open ? "text-[#0a0a0a]" : "text-white"
-          }`}
+          className={`relative flex items-center justify-between px-page py-6 transition-colors duration-300 md:py-8 ${onLight && !open ? "text-[#0a0a0a]" : "text-white"
+            }`}
         >
           <Link
             href="/"
@@ -131,14 +130,12 @@ export default function Header({
             className="flex h-10 w-10 flex-col items-center justify-center gap-[6px]"
           >
             <span
-              className={`block h-[2px] w-7 bg-current transition-all duration-300 ${
-                open ? "translate-y-[4px] rotate-45" : ""
-              }`}
+              className={`block h-[2px] w-7 bg-current transition-all duration-300 ${open ? "translate-y-[4px] rotate-45" : ""
+                }`}
             />
             <span
-              className={`block h-[2px] w-7 bg-current transition-all duration-300 ${
-                open ? "-translate-y-[4px] -rotate-45" : ""
-              }`}
+              className={`block h-[2px] w-7 bg-current transition-all duration-300 ${open ? "-translate-y-[4px] -rotate-45" : ""
+                }`}
             />
           </button>
         </div>
