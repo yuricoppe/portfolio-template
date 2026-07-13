@@ -88,7 +88,7 @@ export default function Header({
               <Link
                 key={l.href}
                 href={l.href}
-                className={`group relative flex items-baseline gap-5 border-b border-line py-6 text-4xl font-medium text-white transition-colors last:border-b-0 hover:text-white sm:py-8 sm:text-6xl md:text-7xl ${
+                className={`group type-display relative flex items-baseline gap-5 border-b border-line py-6 text-4xl text-white transition-colors last:border-b-0 hover:text-white sm:py-8 sm:text-6xl md:text-7xl ${
                   phase === "closing" ? "menu-item--out" : "menu-item"
                 }`}
                 style={{
@@ -98,23 +98,6 @@ export default function Header({
                       : `${100 + i * 80}ms`,
                 }}
               >
-                {/* linha que se desenha sob o item no hover */}
-                <svg
-                  aria-hidden
-                  className="menu-underline absolute bottom-0 left-0 h-[2px] w-full"
-                  viewBox="0 0 100 2"
-                  preserveAspectRatio="none"
-                >
-                  <line
-                    x1="0"
-                    y1="1"
-                    x2="100"
-                    y2="1"
-                    stroke="white"
-                    strokeWidth="2"
-                    pathLength={1}
-                  />
-                </svg>
                 <span className="text-sm font-normal text-faint sm:text-base">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -165,21 +148,46 @@ export default function Header({
             </span>
           </Link>
 
+          {/* hambúrguer em SVG: no hover as linhas se redesenham
+              (stroke reveal) em cascata; aberto, viram um X */}
           <button
             type="button"
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
             onClick={toggleMenu}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-[6px]"
+            className="group flex h-10 w-10 items-center justify-center"
           >
-            <span
-              className={`block h-[2px] w-7 bg-current transition-all duration-300 ${open ? "translate-y-[4px] rotate-45" : ""
-                }`}
-            />
-            <span
-              className={`block h-[2px] w-7 bg-current transition-all duration-300 ${open ? "-translate-y-[4px] -rotate-45" : ""
-                }`}
-            />
+            <svg
+              width="28"
+              height="12"
+              viewBox="0 0 28 12"
+              fill="none"
+              aria-hidden
+              className={open ? "hamb hamb--open" : "hamb"}
+            >
+              <line
+                x1="1"
+                y1="2"
+                x2="27"
+                y2="2"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                pathLength={1}
+                className="hamb-line hamb-line--a"
+              />
+              <line
+                x1="1"
+                y1="10"
+                x2="27"
+                y2="10"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                pathLength={1}
+                className="hamb-line hamb-line--b"
+              />
+            </svg>
           </button>
         </div>
       </header>

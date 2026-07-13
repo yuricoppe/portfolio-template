@@ -38,7 +38,7 @@ export default async function Home() {
             strength={4}
           />
         )}
-        <div className="absolute bottom-10 left-5 z-20 max-w-[80%] text-2xl font-medium tracking-tight md:left-11 md:text-[32px]">
+        <div className="type-display absolute bottom-10 left-5 z-20 max-w-[80%] text-2xl tracking-tight md:left-11 md:text-[32px]">
           <BlurText text={home.heroTitle} delay={200} stagger={80} />
         </div>
         <div className="absolute bottom-10 right-5 z-20 text-white md:right-11">
@@ -74,7 +74,7 @@ export default async function Home() {
           >
             {p.coverUrl && <ParallaxMedia src={p.coverUrl} strength={5} />}
             <div className="absolute inset-0 flex flex-col items-start justify-center px-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:px-9">
-              <div className="text-3xl font-medium md:text-5xl">
+              <div className="type-display text-3xl md:text-5xl">
                 <WeightText text={p.title} />
               </div>
               <div className="mt-1.5 text-sm text-white/60">{p.category}</div>
@@ -86,7 +86,7 @@ export default async function Home() {
       <div className="flex justify-center px-page pt-14">
         <Link
           href="/projetos"
-          className="glow-border btn-elastic inline-flex h-14 items-center rounded-[12px] bg-white px-9 text-[20px] font-medium text-[#0a0a0a] hover:bg-[#e6e6e6]"
+          className="glow-border btn-elastic type-display inline-flex h-14 items-center rounded-[12px] bg-white px-9 text-[20px] font-medium text-[#0a0a0a] hover:bg-[#e6e6e6]"
         >
           {global.labelViewAll}
         </Link>
@@ -110,7 +110,7 @@ export default async function Home() {
                 className={`service-row flex items-center justify-between py-6 ${i < home.services.length - 1 ? "border-b border-[#222]" : ""
                   }`}
               >
-                <span className="flex items-center gap-3">
+                <span className="type-display flex items-center gap-3 font-medium">
                   <span className="service-arrow text-muted">→</span>
                   <WeightText text={s.title} />
                 </span>
@@ -145,14 +145,14 @@ function FeaturedCard({
       {project.coverUrl && <ParallaxMedia src={project.coverUrl} strength={5} />}
       <div className="absolute inset-0 flex flex-col items-start justify-center px-5 md:px-11">
         <div className="transition-transform duration-500 ease-out group-hover:-translate-y-1">
-          <div className="text-4xl font-medium tracking-tight md:text-[64px]">
+          <div className="type-display text-4xl tracking-tight md:text-[64px]">
             <WeightText text={project.title} />
           </div>
           <div className="mt-1.5 text-[15px] text-white/60">
             {project.category}
           </div>
         </div>
-        <div className="glow-border glow-border--dark btn-elastic mt-8 inline-flex h-14 items-center rounded-[12px] bg-white px-8 text-[20px] font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
+        <div className="glow-border glow-border--dark btn-elastic type-display mt-8 inline-flex h-14 items-center rounded-[12px] bg-white px-8 text-[20px] font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
           {global.labelViewCase}
         </div>
       </div>

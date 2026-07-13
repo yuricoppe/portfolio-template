@@ -16,11 +16,24 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Sistema tipográfico: Noto Sans como base (cobre todo texto pequeno,
+   <= 16px: labels, categorias, meta, formulário, números do menu);
+   Elms Sans nos títulos e textos display via h1-h3 e .type-display.
+   Regras fora de @layer vencem utilitários (peso 600 sobrepõe
+   font-medium — os títulos ficam um pouco mais pesados). */
 body {
   background: var(--color-ink);
   color: #fff;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.type-display {
+  font-family: var(--font-sans);
+  font-weight: 600;
 }
 
 /* Side padding used across every section: 20px on mobile, 44px from md up */
@@ -31,11 +44,6 @@ body {
     padding-left: 44px;
     padding-right: 44px;
   }
-}
-
-/* parágrafos usam a fonte de corpo (Noto Sans) */
-p {
-  font-family: var(--font-body);
 }
 
 input,
@@ -176,15 +184,41 @@ textarea:focus {
   }
 }
 
-/* ---------- SVG: sublinhado do menu desenhando no hover ---------- */
+/* ---------- SVG: hambúrguer com redraw no hover ---------- */
 
-.menu-underline line {
+.hamb-line {
   stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.group:hover .menu-underline line {
   stroke-dashoffset: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* a linha se desfaz para a direita e se redesenha da esquerda */
+@keyframes hamb-redraw {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  45% {
+    stroke-dashoffset: -1;
+  }
+  50% {
+    stroke-dashoffset: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.group:hover .hamb:not(.hamb--open) .hamb-line--a {
+  animation: hamb-redraw 0.7s cubic-bezier(0.45, 0, 0.35, 1);
+}
+.group:hover .hamb:not(.hamb--open) .hamb-line--b {
+  animation: hamb-redraw 0.7s cubic-bezier(0.45, 0, 0.35, 1) 0.12s;
+}
+.hamb--open .hamb-line--a {
+  transform: translateY(4px) rotate(45deg);
+}
+.hamb--open .hamb-line--b {
+  transform: translateY(-4px) rotate(-45deg);
 }
 
 /* ---------- Botões com expansão elástica ---------- */
@@ -442,13 +476,17 @@ textarea:focus {
   .glow-border::before,
   .btn-elastic,
   .wf-char,
-  .menu-underline line {
+  .hamb-line {
     transition: none;
   }
   .cue-pill,
   .cue-arrow {
     animation: none;
     stroke-dashoffset: 0;
+  }
+  .group:hover .hamb:not(.hamb--open) .hamb-line--a,
+  .group:hover .hamb:not(.hamb--open) .hamb-line--b {
+    animation: none;
   }
   .btn-elastic:hover,
   .btn-elastic:active {

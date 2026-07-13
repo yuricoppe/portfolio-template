@@ -39,7 +39,7 @@ export default async function Contato() {
             </div>
             <a
               href={`mailto:${global.email}`}
-              className="text-[22px] font-medium text-white transition-colors hover:text-[#b9b9b9]"
+              className="type-display text-[22px] text-white transition-colors hover:text-[#b9b9b9]"
             >
               <WeightText text={global.email} />
             </a>

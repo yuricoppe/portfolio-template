@@ -96,7 +96,7 @@ export default async function ProjetoInterna({
             {global.labelNextProject}
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="flex items-baseline gap-3 px-5 text-center text-4xl font-medium tracking-tighter md:text-[64px]">
+            <span className="type-display flex items-baseline gap-3 px-5 text-center text-4xl tracking-tighter md:text-[64px]">
               <WeightText text={next.title} />
               <span className="inline-block transition-transform duration-500 ease-out group-hover:translate-x-3">
                 →
@@ -180,7 +180,7 @@ function SectionBlock({ section }: { section: Section }) {
       return (
         <div className="px-page py-24 text-center md:py-[150px]">
           <Reveal>
-            <p className="mx-auto max-w-[880px] text-2xl font-medium leading-[1.3] tracking-tight [text-wrap:balance] md:text-[40px]">
+            <p className="type-display mx-auto max-w-[880px] text-2xl leading-[1.3] tracking-tight [text-wrap:balance] md:text-[40px]">
               <WeightText text={section.quote} />{" "}
               <span className="text-muted">
                 <WeightText text={section.quoteMuted} />
@@ -200,7 +200,7 @@ function SectionBlock({ section }: { section: Section }) {
         <div className="grid grid-cols-1 gap-10 border-b border-line px-page py-20 sm:grid-cols-3 sm:gap-8 md:py-[110px]">
           {section.items.map((m, i) => (
             <Reveal key={m.label} delay={i * 100}>
-              <div className="text-4xl font-medium tracking-tight md:text-[56px]">
+              <div className="type-display text-4xl tracking-tight md:text-[56px]">
                 <WeightText text={m.value} />
               </div>
               <div className="mt-2.5 text-[15px] text-muted">{m.label}</div>

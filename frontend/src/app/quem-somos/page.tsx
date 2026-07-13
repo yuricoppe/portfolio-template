@@ -78,7 +78,7 @@ export default async function QuemSomos() {
                 <span className="text-[15px] text-[#666] transition-colors duration-500 group-hover:text-white">
                   {s.number}
                 </span>
-                <span className="text-2xl font-medium tracking-tight md:text-[26px]">
+                <span className="type-display text-2xl tracking-tight md:text-[26px]">
                   <WeightText text={s.title} />
                 </span>
                 <p className="text-[17px] leading-[1.6] text-[#9a9a9a] transition-colors duration-500 group-hover:text-soft">
