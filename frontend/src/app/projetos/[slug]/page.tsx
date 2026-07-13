@@ -6,6 +6,7 @@ import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
+import ScrambleText from "@/components/ScrambleText";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getProject, getProjects } from "@/lib/api";
 import type { Section } from "@/lib/types";
@@ -44,6 +45,8 @@ export default async function ProjetoInterna({
     <div className="bg-ink text-white">
       <Header siteName={global.siteName} />
 
+      {/* conteúdo acima do footer sticky (reveal no fim do scroll) */}
+      <div className="relative z-10 bg-ink">
       {/* Hero */}
       <div
         className="relative min-h-[520px] overflow-hidden md:min-h-[680px]"
@@ -94,7 +97,7 @@ export default async function ProjetoInterna({
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="flex items-baseline gap-3 px-5 text-center text-4xl font-medium tracking-tighter md:text-[64px]">
-              {next.title}
+              <ScrambleText text={next.title} />
               <span className="inline-block transition-transform duration-500 ease-out group-hover:translate-x-3">
                 →
               </span>
@@ -102,6 +105,7 @@ export default async function ProjetoInterna({
           </div>
         </Link>
       )}
+      </div>
 
       <Footer global={global} />
     </div>

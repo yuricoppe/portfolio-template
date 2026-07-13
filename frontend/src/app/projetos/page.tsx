@@ -3,6 +3,7 @@ import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
+import ScrambleText from "@/components/ScrambleText";
 import { getGlobal, getProjects } from "@/lib/api";
 
 export const metadata = {
@@ -16,6 +17,8 @@ export default async function Projetos() {
     <div className="bg-ink text-white">
       <Header siteName={global.siteName} />
 
+      {/* conteúdo acima do footer sticky (reveal no fim do scroll) */}
+      <div className="relative z-10 bg-ink">
       <div className="box-border">
         <div className="sticky top-0 px-page pb-16 pt-32 md:pb-[90px] md:pt-[170px]">
           <h1 className="max-w-[1000px] text-3xl font-medium leading-[1.18] tracking-tight md:text-[56px]">
@@ -44,17 +47,18 @@ export default async function Projetos() {
             </div>
             <div className="absolute bottom-9 left-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:left-11">
               <div className="text-2xl font-medium tracking-tight md:text-[32px]">
-                {p.title}
+                <ScrambleText text={p.title} />
               </div>
               <div className="mt-1.5 text-[15px] text-white/60">
                 {p.category} · {p.year}
               </div>
             </div>
-            <div className="glow-border glow-border--dark absolute bottom-9 right-5 hidden rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] transition-all duration-300 group-hover:bg-[#e6e6e6] sm:block md:right-11">
+            <div className="glow-border glow-border--dark btn-elastic absolute bottom-9 right-5 hidden rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6] sm:block md:right-11">
               {global.labelViewCase}
             </div>
           </Link>
         ))}
+      </div>
       </div>
 
       <Footer global={global} />

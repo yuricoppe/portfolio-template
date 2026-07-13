@@ -5,6 +5,7 @@ import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
+import ScrambleText from "@/components/ScrambleText";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getHomePage, getProjects } from "@/lib/api";
 import type { Global, Project } from "@/lib/types";
@@ -23,6 +24,8 @@ export default async function Home() {
     <div className="bg-ink text-white">
       <Header siteName={global.siteName} />
 
+      {/* conteúdo acima do footer sticky (reveal no fim do scroll) */}
+      <div className="relative z-10 bg-ink">
       {/* Hero */}
       <div
         className="relative min-h-[560px] overflow-hidden md:min-h-[720px]"
@@ -40,7 +43,7 @@ export default async function Home() {
         <div className="hero-arrow absolute bottom-10 right-5 z-20 text-xl md:right-11">
           ↓
         </div>
-        <GradualBlur position="bottom" height={110} blur={64} />
+        <GradualBlur position="bottom" height={110} />
       </div>
 
       {/* Statement + sticky featured cases */}
@@ -70,7 +73,9 @@ export default async function Home() {
           >
             {p.coverUrl && <ParallaxMedia src={p.coverUrl} strength={5} />}
             <div className="absolute bottom-8 left-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:left-9">
-              <div className="text-3xl font-medium md:text-5xl">{p.title}</div>
+              <div className="text-3xl font-medium md:text-5xl">
+                <ScrambleText text={p.title} />
+              </div>
               <div className="mt-1.5 text-sm text-white/60">{p.category}</div>
             </div>
           </Link>
@@ -80,7 +85,7 @@ export default async function Home() {
       <div className="flex justify-center px-page pt-14">
         <Link
           href="/projetos"
-          className="glow-border rounded-[10px] bg-white px-7 py-3.5 text-[15px] font-medium text-[#0a0a0a] transition-all duration-300 hover:bg-[#e6e6e6] hover:px-9"
+          className="glow-border btn-elastic rounded-[10px] bg-white px-7 py-3.5 text-[15px] font-medium text-[#0a0a0a] hover:bg-[#e6e6e6]"
         >
           {global.labelViewAll}
         </Link>
@@ -114,6 +119,7 @@ export default async function Home() {
           ))}
         </div>
       </div>
+      </div>
 
       <Footer global={global} />
     </div>
@@ -136,13 +142,13 @@ function FeaturedCard({
       {project.coverUrl && <ParallaxMedia src={project.coverUrl} strength={5} />}
       <div className="absolute bottom-9 left-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:left-11">
         <div className="text-4xl font-medium tracking-tight md:text-[64px]">
-          {project.title}
+          <ScrambleText text={project.title} />
         </div>
         <div className="mt-1.5 text-[15px] text-white/60">
           {project.category}
         </div>
       </div>
-      <div className="glow-border glow-border--dark absolute bottom-9 right-5 hidden rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] transition-all duration-300 group-hover:bg-[#e6e6e6] sm:block md:right-11">
+      <div className="glow-border glow-border--dark btn-elastic absolute bottom-9 right-5 hidden rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6] sm:block md:right-11">
         {global.labelViewCase}
       </div>
     </Link>

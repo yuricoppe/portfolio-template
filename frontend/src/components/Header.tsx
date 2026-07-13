@@ -104,7 +104,7 @@ export default function Header({
       <header className="fixed inset-x-0 top-0 z-50">
         {!open && (
           <div className="absolute inset-x-0 top-0 h-[110px]">
-            <GradualBlur position="top" height={110} blur={256} />
+            <GradualBlur position="top" height={110} strength={2} divCount={5} />
           </div>
         )}
         {/* z-20 > z-10 da faixa de blur: a linha pinta depois dela e

@@ -5,9 +5,12 @@ import type { Global } from "@/lib/types";
 
 export default function Footer({ global }: { global: Global }) {
   return (
+    // sticky bottom-0: o footer fica preso ao fundo do viewport, atrás do
+    // conteúdo (que usa relative z-10 + bg opaco nas páginas), e a última
+    // seção o revela conforme o scroll chega ao fim.
     <footer
       data-light-section
-      className="relative overflow-hidden bg-paper px-page pb-12 pt-24 text-[#0a0a0a] md:pt-40"
+      className="sticky bottom-0 overflow-hidden bg-paper px-page pb-12 pt-24 text-[#0a0a0a] md:pt-40"
     >
       <Spotlight color="rgba(61, 67, 184, 0.08)" size={560} />
       <Reveal>
@@ -18,7 +21,7 @@ export default function Footer({ global }: { global: Global }) {
       </Reveal>
       <Link
         href="/contato"
-        className="glow-border relative z-10 mt-10 inline-block rounded-[10px] bg-[#0a0a0a] px-7 py-3.5 text-[15px] font-medium text-white transition-all duration-300 hover:bg-[#2a2a2a] hover:px-9"
+        className="glow-border btn-elastic relative z-10 mt-10 inline-block rounded-[10px] bg-[#0a0a0a] px-7 py-3.5 text-[15px] font-medium text-white hover:bg-[#2a2a2a]"
       >
         Contato
       </Link>

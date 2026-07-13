@@ -129,6 +129,22 @@ textarea:focus {
   transform-origin: left center;
 }
 
+/* ---------- Botões com expansão elástica ---------- */
+
+.btn-elastic {
+  transition:
+    transform 0.6s cubic-bezier(0.3, 1.6, 0.4, 1),
+    background-color 0.3s ease;
+  will-change: transform;
+}
+.btn-elastic:hover {
+  transform: scale(1.08);
+}
+.btn-elastic:active {
+  transform: scale(0.96);
+  transition-duration: 0.15s;
+}
+
 /* ---------- Detalhes ---------- */
 
 @keyframes drift-down {
@@ -305,7 +321,12 @@ textarea:focus {
   .service-row,
   .service-row .service-arrow,
   .nav-link::after,
-  .glow-border::before {
+  .glow-border::before,
+  .btn-elastic {
     transition: none;
+  }
+  .btn-elastic:hover,
+  .btn-elastic:active {
+    transform: none;
   }
 }

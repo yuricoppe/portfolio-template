@@ -17,6 +17,8 @@ export default async function QuemSomos() {
     <div className="bg-ink text-white">
       <Header siteName={global.siteName} />
 
+      {/* conteúdo acima do footer sticky (reveal no fim do scroll) */}
+      <div className="relative z-10 bg-ink">
       <div className="px-page pb-24 pt-32 md:pb-[140px] md:pt-[180px]">
         <h1 className="max-w-[1080px] text-3xl font-medium leading-[1.16] tracking-tight md:text-[60px]">
           <BlurText text={about.titleLead} stagger={90} />{" "}
@@ -85,6 +87,7 @@ export default async function QuemSomos() {
             </Reveal>
           ))}
         </div>
+      </div>
       </div>
 
       <Footer global={global} />
