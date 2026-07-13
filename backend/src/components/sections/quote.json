@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_quotes",
+  "info": {
+    "displayName": "Citação",
+    "icon": "quote",
+    "description": "Depoimento centralizado com autor"
+  },
+  "options": {},
+  "attributes": {
+    "quote": {
+      "type": "text",
+      "required": true
+    },
+    "quoteMuted": {
+      "type": "text"
+    },
+    "author": {
+      "type": "string"
+    }
+  }
+}

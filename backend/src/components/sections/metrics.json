@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_sections_metrics",
+  "info": {
+    "displayName": "Métricas",
+    "icon": "chartBubble",
+    "description": "Resultados em números"
+  },
+  "options": {},
+  "attributes": {
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.metric"
+    }
+  }
+}

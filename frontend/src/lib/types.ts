@@ -8,6 +8,20 @@ export interface GalleryImage {
   gradient: string;
 }
 
+export interface TextColumn {
+  label: string;
+  body: string;
+}
+
+// Seções modulares da página interna de projeto (dynamic zone no Strapi)
+export type Section =
+  | { type: "statement"; lead: string; muted: string }
+  | { type: "full-image"; image: GalleryImage }
+  | { type: "text-columns"; columns: TextColumn[] }
+  | { type: "image-grid"; images: GalleryImage[] }
+  | { type: "quote"; quote: string; quoteMuted: string; author: string }
+  | { type: "metrics"; items: Metric[] };
+
 export interface Project {
   title: string;
   slug: string;
@@ -18,15 +32,7 @@ export interface Project {
   scope: string;
   gradient: string;
   coverUrl: string;
-  statement: string;
-  statementMuted: string;
-  challenge: string;
-  solution: string;
-  quote: string;
-  quoteMuted: string;
-  quoteAuthor: string;
-  metrics: Metric[];
-  gallery: GalleryImage[];
+  sections: Section[];
   order: number;
   featured: boolean;
 }
@@ -53,10 +59,16 @@ export interface Global {
   contactTitleMuted: string;
   projectsTitleLead: string;
   projectsTitleMuted: string;
+  siteDescription: string;
+  labelViewCase: string;
+  labelViewAll: string;
+  labelNextProject: string;
 }
 
 export interface HomePage {
   heroTitle: string;
+  heroImageUrl: string;
+  heroGradient: string;
   statementLead: string;
   statementMuted: string;
   servicesLead: string;

@@ -7,7 +7,7 @@ import ParallaxImage from "@/components/ParallaxImage";
 import Reveal from "@/components/Reveal";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getHomePage, getProjects } from "@/lib/api";
-import type { Project } from "@/lib/types";
+import type { Global, Project } from "@/lib/types";
 
 export default async function Home() {
   const [home, global, projects] = await Promise.all([
@@ -21,17 +21,16 @@ export default async function Home() {
 
   return (
     <div className="bg-ink text-white">
+      <Header siteName={global.siteName} />
+
       {/* Hero */}
       <div
         className="relative min-h-[560px] overflow-hidden md:min-h-[720px]"
-        style={{
-          height: "92vh",
-          background:
-            "radial-gradient(120% 90% at 65% 30%, #3d43b8 0%, #23255e 45%, #0b0b16 100%)",
-        }}
+        style={{ height: "92vh", background: home.heroGradient }}
       >
-        <ParallaxImage src="/img/hero.svg" strength={4} />
-        <Header overlay siteName={global.siteName} />
+        {home.heroImageUrl && (
+          <ParallaxImage src={home.heroImageUrl} strength={4} />
+        )}
         <div className="absolute bottom-10 left-5 z-20 max-w-[80%] text-2xl font-medium tracking-tight md:left-11 md:text-[32px]">
           <BlurText text={home.heroTitle} delay={200} stagger={80} />
         </div>
@@ -53,7 +52,7 @@ export default async function Home() {
           />
         </div>
         {featured.map((p) => (
-          <FeaturedCard key={p.slug} project={p} />
+          <FeaturedCard key={p.slug} project={p} global={global} />
         ))}
       </div>
 
@@ -78,9 +77,9 @@ export default async function Home() {
       <div className="flex justify-center px-page pt-14">
         <Link
           href="/projetos"
-          className="glow-border rounded-[10px] bg-white/10 px-7 py-3.5 text-[15px] text-white transition-all duration-300 hover:bg-white/20 hover:px-9"
+          className="glow-border rounded-[10px] bg-white px-7 py-3.5 text-[15px] font-medium text-[#0a0a0a] transition-all duration-300 hover:bg-[#e6e6e6] hover:px-9"
         >
-          Ver todos os projetos
+          {global.labelViewAll}
         </Link>
       </div>
 
@@ -119,7 +118,13 @@ export default async function Home() {
   );
 }
 
-function FeaturedCard({ project }: { project: Project }) {
+function FeaturedCard({
+  project,
+  global,
+}: {
+  project: Project;
+  global: Global;
+}) {
   return (
     <Link
       href={`/projetos/${project.slug}`}
@@ -135,8 +140,8 @@ function FeaturedCard({ project }: { project: Project }) {
           {project.category}
         </div>
       </div>
-      <div className="glow-border absolute bottom-9 right-5 hidden rounded-[10px] bg-white/14 px-6 py-3 text-sm backdrop-blur-md transition-all duration-300 group-hover:bg-white/28 sm:block md:right-11">
-        Ver case
+      <div className="glow-border glow-border--dark absolute bottom-9 right-5 hidden rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] transition-all duration-300 group-hover:bg-[#e6e6e6] sm:block md:right-11">
+        {global.labelViewCase}
       </div>
     </Link>
   );

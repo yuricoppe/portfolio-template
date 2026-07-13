@@ -8,6 +8,7 @@ import ParallaxImage from "@/components/ParallaxImage";
 import Reveal from "@/components/Reveal";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getProject, getProjects } from "@/lib/api";
+import type { Section } from "@/lib/types";
 
 export async function generateMetadata({
   params,
@@ -39,10 +40,10 @@ export default async function ProjetoInterna({
     { label: "Escopo", value: project.scope },
   ];
 
-  const [g0, g1, g2, g3] = project.gallery;
-
   return (
     <div className="bg-ink text-white">
+      <Header siteName={global.siteName} />
+
       {/* Hero */}
       <div
         className="relative min-h-[520px] overflow-hidden md:min-h-[680px]"
@@ -51,7 +52,6 @@ export default async function ProjetoInterna({
         {project.coverUrl && (
           <ParallaxImage src={project.coverUrl} strength={4} />
         )}
-        <Header overlay siteName={global.siteName} />
         <div className="absolute bottom-10 left-5 z-20 md:left-11">
           <div className="mb-3.5 text-[15px] text-white/65">
             {project.category}
@@ -77,84 +77,10 @@ export default async function ProjetoInterna({
         ))}
       </div>
 
-      {/* Statement */}
-      <div className="px-page py-24 md:py-[130px]">
-        <ScrollRevealText
-          lead={project.statement}
-          muted={project.statementMuted}
-          className="max-w-[1050px] text-3xl font-medium leading-[1.25] tracking-tight md:text-[44px]"
-        />
-      </div>
-
-      {/* Full-bleed image 1 */}
-      {g0 && <FullBleed image={g0} />}
-
-      {/* Challenge / solution */}
-      <div className="grid grid-cols-1 gap-14 px-page py-24 md:grid-cols-2 md:gap-20 md:py-[130px]">
-        <Reveal>
-          <div className="mb-5 text-sm tracking-[0.08em] text-faint">
-            O DESAFIO
-          </div>
-          <p className="text-lg leading-[1.6] text-soft md:text-[19px]">
-            {project.challenge}
-          </p>
-        </Reveal>
-        <Reveal delay={120}>
-          <div className="mb-5 text-sm tracking-[0.08em] text-faint">
-            A SOLUÇÃO
-          </div>
-          <p className="text-lg leading-[1.6] text-soft md:text-[19px]">
-            {project.solution}
-          </p>
-        </Reveal>
-      </div>
-
-      {/* Two-up gallery */}
-      {g1 && g2 && (
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-          {[g1, g2].map((g, i) => (
-            <div
-              key={i}
-              className="relative h-[420px] overflow-hidden md:h-[620px]"
-              style={{ background: g.gradient }}
-            >
-              {g.url && <ParallaxImage src={g.url} strength={5} />}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Quote */}
-      {project.quote && (
-        <div className="px-page py-24 text-center md:py-[150px]">
-          <Reveal>
-            <p className="mx-auto max-w-[880px] text-2xl font-medium leading-[1.3] tracking-tight [text-wrap:balance] md:text-[40px]">
-              {project.quote}{" "}
-              <span className="text-muted">{project.quoteMuted}</span>
-            </p>
-            <div className="mt-7 text-[15px] text-faint">
-              {project.quoteAuthor}
-            </div>
-          </Reveal>
-        </div>
-      )}
-
-      {/* Full-bleed image 2 */}
-      {g3 && <FullBleed image={g3} />}
-
-      {/* Metrics */}
-      {project.metrics.length > 0 && (
-        <div className="grid grid-cols-1 gap-10 border-b border-line px-page py-20 sm:grid-cols-3 sm:gap-8 md:py-[110px]">
-          {project.metrics.map((m, i) => (
-            <Reveal key={m.label} delay={i * 100}>
-              <div className="text-4xl font-medium tracking-tight md:text-[56px]">
-                {m.value}
-              </div>
-              <div className="mt-2.5 text-[15px] text-muted">{m.label}</div>
-            </Reveal>
-          ))}
-        </div>
-      )}
+      {/* Seções modulares (dynamic zone do Strapi) */}
+      {project.sections.map((section, i) => (
+        <SectionBlock key={i} section={section} />
+      ))}
 
       {/* Next project */}
       {next && next.slug !== project.slug && (
@@ -164,7 +90,7 @@ export default async function ProjetoInterna({
           style={{ height: "66vh", background: next.gradient }}
         >
           <div className="absolute left-5 top-11 text-[15px] text-white/65 md:left-11">
-            Próximo projeto
+            {global.labelNextProject}
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="flex items-baseline gap-3 px-5 text-center text-4xl font-medium tracking-tighter md:text-[64px]">
@@ -182,13 +108,99 @@ export default async function ProjetoInterna({
   );
 }
 
-function FullBleed({ image }: { image: { url: string; gradient: string } }) {
-  return (
-    <div
-      className="relative min-h-[380px] overflow-hidden md:min-h-[560px]"
-      style={{ height: "78vh", background: image.gradient }}
-    >
-      {image.url && <ParallaxImage src={image.url} strength={7} />}
-    </div>
-  );
+// Renderiza um bloco da página interna. Cada case compõe sua própria
+// sequência de seções no Strapi (dynamic zone).
+function SectionBlock({ section }: { section: Section }) {
+  switch (section.type) {
+    case "statement":
+      return (
+        <div className="px-page py-24 md:py-[130px]">
+          <ScrollRevealText
+            lead={section.lead}
+            muted={section.muted}
+            className="max-w-[1050px] text-3xl font-medium leading-[1.25] tracking-tight md:text-[44px]"
+          />
+        </div>
+      );
+
+    case "full-image":
+      return (
+        <div
+          className="relative min-h-[380px] overflow-hidden md:min-h-[560px]"
+          style={{ height: "78vh", background: section.image.gradient }}
+        >
+          {section.image.url && (
+            <ParallaxImage src={section.image.url} strength={7} />
+          )}
+        </div>
+      );
+
+    case "text-columns":
+      return (
+        <div
+          className={`grid grid-cols-1 gap-14 px-page py-24 md:gap-20 md:py-[130px] ${
+            section.columns.length > 1 ? "md:grid-cols-2" : ""
+          }`}
+        >
+          {section.columns.map((col, i) => (
+            <Reveal key={i} delay={i * 120}>
+              {col.label && (
+                <div className="mb-5 text-sm tracking-[0.08em] text-faint">
+                  {col.label}
+                </div>
+              )}
+              <p className="text-lg leading-[1.6] text-soft md:text-[19px]">
+                {col.body}
+              </p>
+            </Reveal>
+          ))}
+        </div>
+      );
+
+    case "image-grid":
+      return (
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          {section.images.map((g, i) => (
+            <div
+              key={i}
+              className="relative h-[420px] overflow-hidden md:h-[620px]"
+              style={{ background: g.gradient }}
+            >
+              {g.url && <ParallaxImage src={g.url} strength={5} />}
+            </div>
+          ))}
+        </div>
+      );
+
+    case "quote":
+      return (
+        <div className="px-page py-24 text-center md:py-[150px]">
+          <Reveal>
+            <p className="mx-auto max-w-[880px] text-2xl font-medium leading-[1.3] tracking-tight [text-wrap:balance] md:text-[40px]">
+              {section.quote}{" "}
+              <span className="text-muted">{section.quoteMuted}</span>
+            </p>
+            {section.author && (
+              <div className="mt-7 text-[15px] text-faint">
+                {section.author}
+              </div>
+            )}
+          </Reveal>
+        </div>
+      );
+
+    case "metrics":
+      return (
+        <div className="grid grid-cols-1 gap-10 border-b border-line px-page py-20 sm:grid-cols-3 sm:gap-8 md:py-[110px]">
+          {section.items.map((m, i) => (
+            <Reveal key={m.label} delay={i * 100}>
+              <div className="text-4xl font-medium tracking-tight md:text-[56px]">
+                {m.value}
+              </div>
+              <div className="mt-2.5 text-[15px] text-muted">{m.label}</div>
+            </Reveal>
+          ))}
+        </div>
+      );
+  }
 }

@@ -15,7 +15,7 @@ export default function Footer({ global }: { global: Global }) {
       </Reveal>
       <Link
         href="/contato"
-        className="glow-border glow-border--dark relative z-10 mt-10 inline-block rounded-[10px] bg-[#ececec] px-7 py-3.5 text-[15px] transition-all duration-300 hover:bg-[#dcdcdc] hover:px-9"
+        className="glow-border relative z-10 mt-10 inline-block rounded-[10px] bg-[#0a0a0a] px-7 py-3.5 text-[15px] font-medium text-white transition-all duration-300 hover:bg-[#2a2a2a] hover:px-9"
       >
         Contato
       </Link>

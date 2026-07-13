@@ -43,36 +43,16 @@
       "multiple": false,
       "allowedTypes": ["images"]
     },
-    "statement": {
-      "type": "text"
-    },
-    "statementMuted": {
-      "type": "text"
-    },
-    "challenge": {
-      "type": "text"
-    },
-    "solution": {
-      "type": "text"
-    },
-    "quote": {
-      "type": "text"
-    },
-    "quoteMuted": {
-      "type": "text"
-    },
-    "quoteAuthor": {
-      "type": "string"
-    },
-    "metrics": {
-      "type": "component",
-      "repeatable": true,
-      "component": "shared.metric"
-    },
-    "gallery": {
-      "type": "component",
-      "repeatable": true,
-      "component": "shared.gallery-item"
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.statement",
+        "sections.full-image",
+        "sections.text-columns",
+        "sections.image-grid",
+        "sections.quote",
+        "sections.metrics"
+      ]
     },
     "order": {
       "type": "integer",

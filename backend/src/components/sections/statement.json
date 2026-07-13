@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_sections_statements",
+  "info": {
+    "displayName": "Statement",
+    "icon": "quote",
+    "description": "Frase de impacto com trecho em destaque e trecho esmaecido"
+  },
+  "options": {},
+  "attributes": {
+    "lead": {
+      "type": "text",
+      "required": true
+    },
+    "muted": {
+      "type": "text"
+    }
+  }
+}

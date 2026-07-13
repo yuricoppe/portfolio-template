@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_sections_text_columns",
+  "info": {
+    "displayName": "Colunas de texto",
+    "icon": "layout",
+    "description": "Blocos de texto lado a lado (ex.: desafio / solução)"
+  },
+  "options": {},
+  "attributes": {
+    "columns": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.text-column"
+    }
+  }
+}

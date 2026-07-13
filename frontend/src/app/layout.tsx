@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import Cursor from "@/components/Cursor";
 import GlowTracker from "@/components/GlowTracker";
+import { getGlobal } from "@/lib/api";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Colativo — Design, estratégia e tecnologia",
-  description:
-    "O coletivo de design, estratégia e tecnologia por trás de marcas e produtos que movem negócios.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const global = await getGlobal();
+  const name = global.siteName.toLowerCase();
+  const title = `${name.charAt(0).toUpperCase()}${name.slice(1)} — Design, estratégia e tecnologia`;
+  return {
+    title,
+    description: global.siteDescription,
+  };
+}
 
 export default function RootLayout({
   children,

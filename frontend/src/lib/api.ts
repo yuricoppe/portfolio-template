@@ -11,6 +11,7 @@ import type {
   HomePage,
   Metric,
   Project,
+  Section,
 } from "./types";
 
 const STRAPI_URL =
@@ -39,6 +40,50 @@ function mediaUrl(media: any): string {
   return url.startsWith("http") ? url : `${STRAPI_URL}${url}`;
 }
 
+const DEFAULT_GRADIENT = "linear-gradient(150deg,#1c2b45,#0b1220)";
+
+function mapGalleryImage(g: any): GalleryImage {
+  return {
+    url: mediaUrl(g?.image),
+    gradient: g?.gradient ?? DEFAULT_GRADIENT,
+  };
+}
+
+function mapSection(s: any): Section | null {
+  switch (s.__component) {
+    case "sections.statement":
+      return { type: "statement", lead: s.lead ?? "", muted: s.muted ?? "" };
+    case "sections.full-image":
+      return { type: "full-image", image: mapGalleryImage(s) };
+    case "sections.text-columns":
+      return {
+        type: "text-columns",
+        columns: (s.columns ?? []).map((c: any) => ({
+          label: c.label ?? "",
+          body: c.body ?? "",
+        })),
+      };
+    case "sections.image-grid":
+      return { type: "image-grid", images: (s.images ?? []).map(mapGalleryImage) };
+    case "sections.quote":
+      return {
+        type: "quote",
+        quote: s.quote ?? "",
+        quoteMuted: s.quoteMuted ?? "",
+        author: s.author ?? "",
+      };
+    case "sections.metrics":
+      return {
+        type: "metrics",
+        items: (s.items ?? []).map(
+          (m: any): Metric => ({ value: m.value ?? "", label: m.label ?? "" }),
+        ),
+      };
+    default:
+      return null;
+  }
+}
+
 function mapProject(p: any): Project {
   return {
     title: p.title ?? "",
@@ -50,22 +95,9 @@ function mapProject(p: any): Project {
     scope: p.scope ?? "",
     gradient: p.gradient ?? "linear-gradient(160deg,#1a2f4a,#060608)",
     coverUrl: mediaUrl(p.cover),
-    statement: p.statement ?? "",
-    statementMuted: p.statementMuted ?? "",
-    challenge: p.challenge ?? "",
-    solution: p.solution ?? "",
-    quote: p.quote ?? "",
-    quoteMuted: p.quoteMuted ?? "",
-    quoteAuthor: p.quoteAuthor ?? "",
-    metrics: (p.metrics ?? []).map(
-      (m: any): Metric => ({ value: m.value ?? "", label: m.label ?? "" }),
-    ),
-    gallery: (p.gallery ?? []).map(
-      (g: any): GalleryImage => ({
-        url: mediaUrl(g.image),
-        gradient: g.gradient ?? "linear-gradient(150deg,#1c2b45,#0b1220)",
-      }),
-    ),
+    sections: (p.sections ?? [])
+      .map(mapSection)
+      .filter((s: Section | null): s is Section => s !== null),
     order: p.order ?? 99,
     featured: p.featured ?? false,
   };
@@ -73,7 +105,13 @@ function mapProject(p: any): Project {
 
 export async function getProjects(): Promise<Project[]> {
   const data = await strapiFetch(
-    "/projects?sort=order:asc&populate[cover]=true&populate[metrics]=true&populate[gallery][populate]=image",
+    "/projects?sort=order:asc&populate[cover]=true" +
+      "&populate[sections][on][sections.statement]=true" +
+      "&populate[sections][on][sections.full-image][populate]=image" +
+      "&populate[sections][on][sections.text-columns][populate]=columns" +
+      "&populate[sections][on][sections.image-grid][populate][images][populate]=image" +
+      "&populate[sections][on][sections.quote]=true" +
+      "&populate[sections][on][sections.metrics][populate]=items",
   );
   if (!data || data.length === 0) return fallbackProjects;
   return data.map(mapProject);
@@ -106,14 +144,24 @@ export async function getGlobal(): Promise<Global> {
       data.projectsTitleLead ?? fallbackGlobal.projectsTitleLead,
     projectsTitleMuted:
       data.projectsTitleMuted ?? fallbackGlobal.projectsTitleMuted,
+    siteDescription: data.siteDescription ?? fallbackGlobal.siteDescription,
+    labelViewCase: data.labelViewCase ?? fallbackGlobal.labelViewCase,
+    labelViewAll: data.labelViewAll ?? fallbackGlobal.labelViewAll,
+    labelNextProject: data.labelNextProject ?? fallbackGlobal.labelNextProject,
   };
 }
 
 export async function getHomePage(): Promise<HomePage> {
-  const data = await strapiFetch("/home-page?populate=services");
+  const data = await strapiFetch(
+    "/home-page?populate[services]=true&populate[heroImage]=true",
+  );
   if (!data) return fallbackHome;
   return {
     heroTitle: data.heroTitle ?? fallbackHome.heroTitle,
+    heroImageUrl: data.heroImage
+      ? mediaUrl(data.heroImage)
+      : fallbackHome.heroImageUrl,
+    heroGradient: data.heroGradient ?? fallbackHome.heroGradient,
     statementLead: data.statementLead ?? fallbackHome.statementLead,
     statementMuted: data.statementMuted ?? fallbackHome.statementMuted,
     servicesLead: data.servicesLead ?? fallbackHome.servicesLead,

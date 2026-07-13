@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_shared_text_columns",
+  "info": {
+    "displayName": "Coluna de texto",
+    "icon": "file"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "body": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

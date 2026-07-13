@@ -529,6 +529,9 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     ctaLead: Schema.Attribute.String;
     ctaMuted: Schema.Attribute.String;
     email: Schema.Attribute.Email;
+    labelNextProject: Schema.Attribute.String;
+    labelViewAll: Schema.Attribute.String;
+    labelViewCase: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -540,6 +543,7 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
     projectsTitleLead: Schema.Attribute.String;
     projectsTitleMuted: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
+    siteDescription: Schema.Attribute.Text;
     siteName: Schema.Attribute.String & Schema.Attribute.DefaultTo<'COLATIVO'>;
     socials: Schema.Attribute.Component<'shared.social-link', true>;
     tagline: Schema.Attribute.String;
@@ -564,6 +568,8 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    heroGradient: Schema.Attribute.String;
+    heroImage: Schema.Attribute.Media<'images'>;
     heroTitle: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -596,14 +602,12 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   };
   attributes: {
     category: Schema.Attribute.String;
-    challenge: Schema.Attribute.Text;
     client: Schema.Attribute.String;
     cover: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    gallery: Schema.Attribute.Component<'shared.gallery-item', true>;
     gradient: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -611,18 +615,21 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
       'api::project.project'
     > &
       Schema.Attribute.Private;
-    metrics: Schema.Attribute.Component<'shared.metric', true>;
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<99>;
     publishedAt: Schema.Attribute.DateTime;
-    quote: Schema.Attribute.Text;
-    quoteAuthor: Schema.Attribute.String;
-    quoteMuted: Schema.Attribute.Text;
     scope: Schema.Attribute.String;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'sections.statement',
+        'sections.full-image',
+        'sections.text-columns',
+        'sections.image-grid',
+        'sections.quote',
+        'sections.metrics',
+      ]
+    >;
     sector: Schema.Attribute.String;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    solution: Schema.Attribute.Text;
-    statement: Schema.Attribute.Text;
-    statementMuted: Schema.Attribute.Text;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

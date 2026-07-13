@@ -16,7 +16,7 @@ export default async function Contato() {
       <Spotlight color="rgba(90, 100, 220, 0.10)" size={640} />
       <Header siteName={global.siteName} />
 
-      <div className="px-page pb-16 pt-20 md:pb-[90px] md:pt-[110px]">
+      <div className="px-page pb-16 pt-32 md:pb-[90px] md:pt-[170px]">
         <h1 className="max-w-[1000px] text-3xl font-medium leading-[1.16] tracking-tight md:text-[60px]">
           <BlurText text={global.contactTitleLead} stagger={90} />{" "}
           <BlurText

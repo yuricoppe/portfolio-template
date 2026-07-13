@@ -17,7 +17,7 @@ export default async function Projetos() {
       <Header siteName={global.siteName} />
 
       <div className="box-border">
-        <div className="sticky top-0 px-page pb-16 pt-20 md:pb-[90px] md:pt-[110px]">
+        <div className="sticky top-0 px-page pb-16 pt-32 md:pb-[90px] md:pt-[170px]">
           <h1 className="max-w-[1000px] text-3xl font-medium leading-[1.18] tracking-tight md:text-[56px]">
             <BlurText text={global.projectsTitleLead} stagger={90} />{" "}
             <BlurText
@@ -50,8 +50,8 @@ export default async function Projetos() {
                 {p.category} · {p.year}
               </div>
             </div>
-            <div className="glow-border absolute bottom-9 right-5 hidden rounded-[10px] bg-white/14 px-6 py-3 text-sm backdrop-blur-md transition-all duration-300 group-hover:bg-white/28 sm:block md:right-11">
-              Ver case
+            <div className="glow-border glow-border--dark absolute bottom-9 right-5 hidden rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] transition-all duration-300 group-hover:bg-[#e6e6e6] sm:block md:right-11">
+              {global.labelViewCase}
             </div>
           </Link>
         ))}

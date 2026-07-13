@@ -49,6 +49,18 @@
     },
     "projectsTitleMuted": {
       "type": "text"
+    },
+    "siteDescription": {
+      "type": "text"
+    },
+    "labelViewCase": {
+      "type": "string"
+    },
+    "labelViewAll": {
+      "type": "string"
+    },
+    "labelNextProject": {
+      "type": "string"
     }
   }
 }

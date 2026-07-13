@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_sections_image_grids",
+  "info": {
+    "displayName": "Grade de imagens",
+    "icon": "apps",
+    "description": "Imagens lado a lado em grade"
+  },
+  "options": {},
+  "attributes": {
+    "images": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.gallery-item"
+    }
+  }
+}

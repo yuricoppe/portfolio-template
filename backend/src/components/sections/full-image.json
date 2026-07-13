@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_sections_full_images",
+  "info": {
+    "displayName": "Imagem full-bleed",
+    "icon": "picture",
+    "description": "Imagem em largura total com gradiente de fundo"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "gradient": {
+      "type": "string"
+    }
+  }
+}

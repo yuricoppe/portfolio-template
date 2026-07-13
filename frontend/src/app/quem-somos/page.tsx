@@ -17,7 +17,7 @@ export default async function QuemSomos() {
     <div className="bg-ink text-white">
       <Header siteName={global.siteName} />
 
-      <div className="px-page pb-24 pt-20 md:pb-[140px] md:pt-[120px]">
+      <div className="px-page pb-24 pt-32 md:pb-[140px] md:pt-[180px]">
         <h1 className="max-w-[1080px] text-3xl font-medium leading-[1.16] tracking-tight md:text-[60px]">
           <BlurText text={about.titleLead} stagger={90} />{" "}
           <BlurText
