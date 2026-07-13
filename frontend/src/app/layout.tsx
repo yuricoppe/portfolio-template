@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
+import * as React from "react";
 import Cursor from "@/components/Cursor";
 import GlowTracker from "@/components/GlowTracker";
 import { getGlobal } from "@/lib/api";
 import "./globals.css";
+
+// Com experimental.viewTransition, o React vendorado pelo Next exporta
+// ViewTransition — os @types/react estáveis ainda não o tipam.
+const ViewTransition = (
+  React as unknown as {
+    ViewTransition: React.ComponentType<{
+      children: React.ReactNode;
+      name?: string;
+    }>;
+  }
+).ViewTransition;
 
 export async function generateMetadata(): Promise<Metadata> {
   const global = await getGlobal();
@@ -32,7 +44,7 @@ export default function RootLayout({
             __html: "document.documentElement.classList.add('js')",
           }}
         />
-        {children}
+        <ViewTransition name="page">{children}</ViewTransition>
         <Cursor />
         <GlowTracker />
       </body>

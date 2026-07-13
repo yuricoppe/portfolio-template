@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import ScrambleText from "@/components/ScrambleText";
 import Spotlight from "@/components/Spotlight";
 import type { Global } from "@/lib/types";
 
@@ -15,8 +16,10 @@ export default function Footer({ global }: { global: Global }) {
       <Spotlight color="rgba(61, 67, 184, 0.08)" size={560} />
       <Reveal>
         <h2 className="max-w-5xl text-4xl font-medium leading-[1.15] tracking-tight md:text-[56px]">
-          {global.ctaLead}{" "}
-          <span className="text-[#9a9a9a]">{global.ctaMuted}</span>
+          <ScrambleText text={global.ctaLead} />{" "}
+          <span className="text-[#9a9a9a]">
+            <ScrambleText text={global.ctaMuted} />
+          </span>
         </h2>
       </Reveal>
       <Link

@@ -45,16 +45,18 @@ export default async function Projetos() {
             <div className="absolute left-5 top-10 text-[15px] text-white/60 md:left-11">
               {String(i + 1).padStart(2, "0")}
             </div>
-            <div className="absolute bottom-9 left-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:left-11">
-              <div className="text-2xl font-medium tracking-tight md:text-[32px]">
-                <ScrambleText text={p.title} />
+            <div className="absolute inset-0 flex flex-col items-start justify-center px-5 md:px-11">
+              <div className="transition-transform duration-500 ease-out group-hover:-translate-y-1">
+                <div className="text-2xl font-medium tracking-tight md:text-[32px]">
+                  <ScrambleText text={p.title} />
+                </div>
+                <div className="mt-1.5 text-[15px] text-white/60">
+                  {p.category} · {p.year}
+                </div>
               </div>
-              <div className="mt-1.5 text-[15px] text-white/60">
-                {p.category} · {p.year}
+              <div className="glow-border glow-border--dark btn-elastic mt-8 rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
+                {global.labelViewCase}
               </div>
-            </div>
-            <div className="glow-border glow-border--dark btn-elastic absolute bottom-9 right-5 hidden rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6] sm:block md:right-11">
-              {global.labelViewCase}
             </div>
           </Link>
         ))}

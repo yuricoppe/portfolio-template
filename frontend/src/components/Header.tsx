@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GradualBlur from "@/components/GradualBlur";
+import ScrambleText from "@/components/ScrambleText";
 
 const links = [
   { href: "/projetos", label: "Projetos" },
@@ -21,8 +22,22 @@ export default function Header({
   siteName?: string;
 }) {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  // "closed" -> "open" -> "closing" (anima a saída) -> "closed"
+  const [phase, setPhase] = useState<"closed" | "open" | "closing">("closed");
+  const closeTimer = useRef(0);
   const [onLight, setOnLight] = useState(false);
+  const open = phase === "open";
+  const mounted = phase !== "closed";
+
+  const toggleMenu = () => {
+    window.clearTimeout(closeTimer.current);
+    if (phase === "open") {
+      setPhase("closing");
+      closeTimer.current = window.setTimeout(() => setPhase("closed"), 480);
+    } else {
+      setPhase("open");
+    }
+  };
 
   // Inverte as cores do header quando uma seção clara (ex.: footer
   // branco, marcada com data-light-section) passa sob a barra fixa.
@@ -53,24 +68,35 @@ export default function Header({
     };
   }, [open]);
 
-  // fecha o menu ao navegar
+  // fecha o menu ao navegar (sem animação: a transição de página cobre)
   useEffect(() => {
-    setOpen(false);
+    window.clearTimeout(closeTimer.current);
+    setPhase("closed");
   }, [pathname]);
 
   return (
     <>
-      {/* menu fullscreen */}
-      {open && (
-        <div className="menu-panel fixed inset-0 z-40 flex flex-col justify-center bg-[#070707]/97 px-page backdrop-blur-2xl">
+      {/* menu fullscreen (permanece montado durante a animação de saída) */}
+      {mounted && (
+        <div
+          className={`fixed inset-0 z-40 flex flex-col justify-center bg-[#070707]/97 px-page backdrop-blur-2xl ${
+            phase === "closing" ? "menu-panel--out" : "menu-panel"
+          }`}
+        >
           <nav className="flex flex-col">
             {links.map((l, i) => (
               <Link
                 key={l.href}
                 href={l.href}
-                onClick={() => setOpen(false)}
-                className="menu-item group flex items-baseline gap-5 border-b border-line py-6 text-4xl font-medium text-white transition-colors last:border-b-0 hover:text-white sm:py-8 sm:text-6xl md:text-7xl"
-                style={{ animationDelay: `${100 + i * 80}ms` }}
+                className={`group flex items-baseline gap-5 border-b border-line py-6 text-4xl font-medium text-white transition-colors last:border-b-0 hover:text-white sm:py-8 sm:text-6xl md:text-7xl ${
+                  phase === "closing" ? "menu-item--out" : "menu-item"
+                }`}
+                style={{
+                  animationDelay:
+                    phase === "closing"
+                      ? `${(links.length - 1 - i) * 60}ms`
+                      : `${100 + i * 80}ms`,
+                }}
               >
                 <span className="text-sm font-normal text-faint sm:text-base">
                   {String(i + 1).padStart(2, "0")}
@@ -82,7 +108,7 @@ export default function Header({
                       : "text-white/70 transition-colors duration-300 group-hover:text-white"
                   }
                 >
-                  {l.label}
+                  <ScrambleText text={l.label} radius={64} />
                 </span>
                 <span className="ml-auto translate-x-2 text-2xl text-white/0 transition-all duration-300 group-hover:translate-x-0 group-hover:text-white/60 sm:text-4xl">
                   →
@@ -91,8 +117,10 @@ export default function Header({
             ))}
           </nav>
           <div
-            className="menu-item absolute bottom-10 left-5 right-5 flex flex-col gap-1 text-sm text-faint md:left-11 md:right-11 md:flex-row md:justify-between"
-            style={{ animationDelay: "420ms" }}
+            className={`absolute bottom-10 left-5 right-5 flex flex-col gap-1 text-sm text-faint md:left-11 md:right-11 md:flex-row md:justify-between ${
+              phase === "closing" ? "menu-item--out" : "menu-item"
+            }`}
+            style={{ animationDelay: phase === "closing" ? "0ms" : "420ms" }}
           >
             <span>ola@colativo.com.br</span>
             <span>São Paulo — BR</span>
@@ -113,11 +141,7 @@ export default function Header({
           className={`relative z-20 flex items-center justify-between px-page py-6 transition-colors duration-300 md:py-8 ${onLight && !open ? "text-[#0a0a0a]" : "text-white"
             }`}
         >
-          <Link
-            href="/"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-3"
-          >
+          <Link href="/" className="flex items-center gap-3">
             <span className="inline-block h-[22px] w-[22px] rounded-[7px] bg-current transition-colors duration-300" />
             <span className="text-[15px] font-medium tracking-[0.24em]">
               {siteName}
@@ -128,7 +152,7 @@ export default function Header({
             type="button"
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
-            onClick={() => setOpen(!open)}
+            onClick={toggleMenu}
             className="flex h-10 w-10 flex-col items-center justify-center gap-[6px]"
           >
             <span

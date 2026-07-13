@@ -72,7 +72,7 @@ export default async function Home() {
             style={{ background: p.gradient }}
           >
             {p.coverUrl && <ParallaxMedia src={p.coverUrl} strength={5} />}
-            <div className="absolute bottom-8 left-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:left-9">
+            <div className="absolute inset-0 flex flex-col items-start justify-center px-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:px-9">
               <div className="text-3xl font-medium md:text-5xl">
                 <ScrambleText text={p.title} />
               </div>
@@ -95,9 +95,11 @@ export default async function Home() {
       <div className="grid grid-cols-1 gap-10 px-page py-24 md:grid-cols-2 md:gap-[60px] md:py-[150px]">
         <Reveal>
           <h2 className="text-3xl font-medium leading-[1.2] tracking-tight md:text-[40px]">
-            {home.servicesLead}
+            <ScrambleText text={home.servicesLead} />
             <br />
-            <span className="text-muted">{home.servicesMuted}</span>
+            <span className="text-muted">
+              <ScrambleText text={home.servicesMuted} />
+            </span>
           </h2>
         </Reveal>
         <div className="flex flex-col text-lg md:text-[19px]">
@@ -109,7 +111,7 @@ export default async function Home() {
               >
                 <span className="flex items-center gap-3">
                   <span className="service-arrow text-muted">→</span>
-                  {s.title}
+                  <ScrambleText text={s.title} />
                 </span>
                 <span className="text-[#666]">
                   {String(i + 1).padStart(2, "0")}
@@ -140,16 +142,18 @@ function FeaturedCard({
       style={{ height: "80vh", background: project.gradient }}
     >
       {project.coverUrl && <ParallaxMedia src={project.coverUrl} strength={5} />}
-      <div className="absolute bottom-9 left-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:left-11">
-        <div className="text-4xl font-medium tracking-tight md:text-[64px]">
-          <ScrambleText text={project.title} />
+      <div className="absolute inset-0 flex flex-col items-start justify-center px-5 md:px-11">
+        <div className="transition-transform duration-500 ease-out group-hover:-translate-y-1">
+          <div className="text-4xl font-medium tracking-tight md:text-[64px]">
+            <ScrambleText text={project.title} />
+          </div>
+          <div className="mt-1.5 text-[15px] text-white/60">
+            {project.category}
+          </div>
         </div>
-        <div className="mt-1.5 text-[15px] text-white/60">
-          {project.category}
+        <div className="glow-border glow-border--dark btn-elastic mt-8 rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
+          {global.labelViewCase}
         </div>
-      </div>
-      <div className="glow-border glow-border--dark btn-elastic absolute bottom-9 right-5 hidden rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6] sm:block md:right-11">
-        {global.labelViewCase}
       </div>
     </Link>
   );

@@ -1,5 +1,6 @@
 import BlurText from "@/components/BlurText";
 import Header from "@/components/Header";
+import ScrambleText from "@/components/ScrambleText";
 import Spotlight from "@/components/Spotlight";
 import { getGlobal } from "@/lib/api";
 import ContactForm from "./ContactForm";
@@ -40,7 +41,7 @@ export default async function Contato() {
               href={`mailto:${global.email}`}
               className="text-[22px] font-medium text-white transition-colors hover:text-[#b9b9b9]"
             >
-              {global.email}
+              <ScrambleText text={global.email} />
             </a>
           </div>
           <div>

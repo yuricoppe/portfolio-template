@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { prefersReducedMotion, useRafScroll } from "@/lib/motion";
+import { scrambleChars, useScramble } from "@/components/ScrambleText";
 
 // Texto que revela palavra por palavra conforme o scroll: as palavras
 // começam apagadas/desfocadas e ficam nítidas à medida que o bloco
@@ -22,6 +23,7 @@ export default function ScrollRevealText({
 }) {
   const ref = useRef<HTMLHeadingElement>(null);
   const lastRevealed = useRef(-1);
+  useScramble(ref);
 
   useRafScroll(() => {
     const el = ref.current;
@@ -53,7 +55,7 @@ export default function ScrollRevealText({
         aria-hidden
         className={`srt-word ${mutedPart ? "srt-word--muted" : ""}`}
       >
-        {w}{" "}
+        {scrambleChars(w)}{" "}
       </span>
     ));
 

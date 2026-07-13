@@ -296,6 +296,60 @@ textarea:focus {
   animation: menu-item-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* saída do menu: itens somem em cascata invertida, painel dissolve */
+@keyframes menu-panel-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+@keyframes menu-item-out {
+  from {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-18px);
+    filter: blur(6px);
+  }
+}
+.menu-panel--out {
+  animation: menu-panel-out 0.3s ease both;
+  animation-delay: 0.18s;
+  pointer-events: none;
+}
+.menu-item--out {
+  animation: menu-item-out 0.32s cubic-bezier(0.55, 0, 0.55, 0.2) both;
+}
+
+/* ---------- Transição de página (View Transitions) ---------- */
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(-16px);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(26px);
+  }
+}
+::view-transition-old(page) {
+  animation: page-out 0.35s cubic-bezier(0.55, 0, 0.55, 0.2) both;
+}
+::view-transition-new(page) {
+  animation: page-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -315,7 +369,13 @@ textarea:focus {
     animation: none;
   }
   .menu-panel,
-  .menu-item {
+  .menu-item,
+  .menu-panel--out,
+  .menu-item--out {
+    animation: none;
+  }
+  ::view-transition-old(page),
+  ::view-transition-new(page) {
     animation: none;
   }
   .service-row,

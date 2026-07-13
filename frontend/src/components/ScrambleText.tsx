@@ -3,34 +3,29 @@
 import { useEffect, useRef } from "react";
 import { hasFinePointer, prefersReducedMotion } from "@/lib/motion";
 
-const DEFAULT_CHARS = "!<>-_\\/[]{}—=+*^?#";
+const DEFAULT_CHARS = ".:";
 
-// Título que embaralha os caracteres próximos do cursor (efeito
-// "scrambled text"): cada letra dentro do raio troca por glifos
-// aleatórios por um curto período e volta ao original.
-export default function ScrambleText({
-  text,
-  className = "",
-  radius = 80,
-  duration = 600,
-  tick = 45,
-  chars = DEFAULT_CHARS,
-}: {
-  text: string;
-  className?: string;
+export interface ScrambleOptions {
   radius?: number;
   duration?: number; // ms que cada letra permanece embaralhada
   tick?: number; // intervalo entre trocas de glifo
   chars?: string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
+}
 
+// Hook compartilhado do efeito "scrambled text": embaralha os spans
+// .scr-char próximos do cursor dentro do container. Usado pelo
+// ScrambleText e pelos títulos animados (BlurText/ScrollRevealText).
+export function useScramble(
+  ref: React.RefObject<HTMLElement | null>,
+  { radius = 40, duration = 600, tick = 45, chars = DEFAULT_CHARS }: ScrambleOptions = {},
+) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (!hasFinePointer() || prefersReducedMotion()) return;
 
     const spans = Array.from(el.querySelectorAll<HTMLElement>(".scr-char"));
+    if (spans.length === 0) return;
     const activeUntil = new Map<number, number>();
     let interval = 0;
     let lastSwap = 0;
@@ -58,7 +53,7 @@ export default function ScrambleText({
     const onMove = (e: PointerEvent) => {
       for (let i = 0; i < spans.length; i++) {
         const span = spans[i];
-        if (span.dataset.orig === " ") continue;
+        if ((span.dataset.orig ?? " ").trim() === "") continue;
         const r = span.getBoundingClientRect();
         const dx = e.clientX - (r.left + r.width / 2);
         const dy = e.clientY - (r.top + r.height / 2);
@@ -78,15 +73,38 @@ export default function ScrambleText({
       window.clearInterval(interval);
       spans.forEach((s) => (s.textContent = s.dataset.orig ?? ""));
     };
-  }, [radius, duration, tick, chars]);
+  }, [ref, radius, duration, tick, chars]);
+}
+
+// Divide um texto em spans .scr-char (um por caractere), preservando
+// espaços fora dos spans para o line-wrap natural.
+export function scrambleChars(text: string) {
+  return text.split("").map((c, i) =>
+    c === " " ? (
+      " "
+    ) : (
+      <span key={i} aria-hidden className="scr-char" data-orig={c}>
+        {c}
+      </span>
+    ),
+  );
+}
+
+// Texto simples com o efeito de scramble no hover.
+export default function ScrambleText({
+  text,
+  className = "",
+  ...options
+}: {
+  text: string;
+  className?: string;
+} & ScrambleOptions) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useScramble(ref, options);
 
   return (
     <span ref={ref} className={className} aria-label={text}>
-      {text.split("").map((c, i) => (
-        <span key={i} aria-hidden className="scr-char" data-orig={c}>
-          {c}
-        </span>
-      ))}
+      {scrambleChars(text)}
     </span>
   );
 }

@@ -181,8 +181,10 @@ function SectionBlock({ section }: { section: Section }) {
         <div className="px-page py-24 text-center md:py-[150px]">
           <Reveal>
             <p className="mx-auto max-w-[880px] text-2xl font-medium leading-[1.3] tracking-tight [text-wrap:balance] md:text-[40px]">
-              {section.quote}{" "}
-              <span className="text-muted">{section.quoteMuted}</span>
+              <ScrambleText text={section.quote} />{" "}
+              <span className="text-muted">
+                <ScrambleText text={section.quoteMuted} />
+              </span>
             </p>
             {section.author && (
               <div className="mt-7 text-[15px] text-faint">
@@ -199,7 +201,7 @@ function SectionBlock({ section }: { section: Section }) {
           {section.items.map((m, i) => (
             <Reveal key={m.label} delay={i * 100}>
               <div className="text-4xl font-medium tracking-tight md:text-[56px]">
-                {m.value}
+                <ScrambleText text={m.value} />
               </div>
               <div className="mt-2.5 text-[15px] text-muted">{m.label}</div>
             </Reveal>
