@@ -68,6 +68,8 @@ export interface Global {
 export interface HomePage {
   heroTitle: string;
   heroImageUrl: string;
+  // se preenchido no Strapi, o vídeo tem prioridade sobre a imagem
+  heroVideoUrl: string;
   heroGradient: string;
   statementLead: string;
   statementMuted: string;

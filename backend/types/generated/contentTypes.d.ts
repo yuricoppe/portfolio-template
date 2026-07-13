@@ -571,6 +571,7 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
     heroGradient: Schema.Attribute.String;
     heroImage: Schema.Attribute.Media<'images'>;
     heroTitle: Schema.Attribute.String;
+    heroVideo: Schema.Attribute.Media<'videos'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -603,7 +604,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   attributes: {
     category: Schema.Attribute.String;
     client: Schema.Attribute.String;
-    cover: Schema.Attribute.Media<'images'>;
+    cover: Schema.Attribute.Media<'images' | 'videos'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

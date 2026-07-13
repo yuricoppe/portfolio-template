@@ -1,7 +1,7 @@
 import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import ParallaxImage from "@/components/ParallaxImage";
+import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getAboutPage, getGlobal } from "@/lib/api";
@@ -39,7 +39,7 @@ export default async function QuemSomos() {
         }}
       >
         {about.teamImageUrl && (
-          <ParallaxImage src={about.teamImageUrl} alt="Equipe Colativo" strength={6} />
+          <ParallaxMedia src={about.teamImageUrl} alt="Equipe Colativo" strength={6} />
         )}
       </div>
 

@@ -19,6 +19,11 @@
       "multiple": false,
       "allowedTypes": ["images"]
     },
+    "heroVideo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["videos"]
+    },
     "heroGradient": {
       "type": "string"
     },

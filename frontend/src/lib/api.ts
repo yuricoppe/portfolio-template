@@ -153,7 +153,7 @@ export async function getGlobal(): Promise<Global> {
 
 export async function getHomePage(): Promise<HomePage> {
   const data = await strapiFetch(
-    "/home-page?populate[services]=true&populate[heroImage]=true",
+    "/home-page?populate[services]=true&populate[heroImage]=true&populate[heroVideo]=true",
   );
   if (!data) return fallbackHome;
   return {
@@ -161,6 +161,7 @@ export async function getHomePage(): Promise<HomePage> {
     heroImageUrl: data.heroImage
       ? mediaUrl(data.heroImage)
       : fallbackHome.heroImageUrl,
+    heroVideoUrl: data.heroVideo ? mediaUrl(data.heroVideo) : "",
     heroGradient: data.heroGradient ?? fallbackHome.heroGradient,
     statementLead: data.statementLead ?? fallbackHome.statementLead,
     statementMuted: data.statementMuted ?? fallbackHome.statementMuted,

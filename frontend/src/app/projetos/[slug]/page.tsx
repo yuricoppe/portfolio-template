@@ -4,7 +4,7 @@ import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
-import ParallaxImage from "@/components/ParallaxImage";
+import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getProject, getProjects } from "@/lib/api";
@@ -50,7 +50,7 @@ export default async function ProjetoInterna({
         style={{ height: "88vh", background: project.gradient }}
       >
         {project.coverUrl && (
-          <ParallaxImage src={project.coverUrl} strength={4} />
+          <ParallaxMedia src={project.coverUrl} strength={4} />
         )}
         <div className="absolute bottom-10 left-5 z-20 md:left-11">
           <div className="mb-3.5 text-[15px] text-white/65">
@@ -130,7 +130,7 @@ function SectionBlock({ section }: { section: Section }) {
           style={{ height: "78vh", background: section.image.gradient }}
         >
           {section.image.url && (
-            <ParallaxImage src={section.image.url} strength={7} />
+            <ParallaxMedia src={section.image.url} strength={7} />
           )}
         </div>
       );
@@ -166,7 +166,7 @@ function SectionBlock({ section }: { section: Section }) {
               className="relative h-[420px] overflow-hidden md:h-[620px]"
               style={{ background: g.gradient }}
             >
-              {g.url && <ParallaxImage src={g.url} strength={5} />}
+              {g.url && <ParallaxMedia src={g.url} strength={5} />}
             </div>
           ))}
         </div>

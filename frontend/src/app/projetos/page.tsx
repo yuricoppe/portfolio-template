@@ -2,7 +2,7 @@ import Link from "next/link";
 import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import ParallaxImage from "@/components/ParallaxImage";
+import ParallaxMedia from "@/components/ParallaxMedia";
 import { getGlobal, getProjects } from "@/lib/api";
 
 export const metadata = {
@@ -38,7 +38,7 @@ export default async function Projetos() {
             }`}
             style={{ height: "82vh", background: p.gradient }}
           >
-            {p.coverUrl && <ParallaxImage src={p.coverUrl} strength={5} />}
+            {p.coverUrl && <ParallaxMedia src={p.coverUrl} strength={5} />}
             <div className="absolute left-5 top-10 text-[15px] text-white/60 md:left-11">
               {String(i + 1).padStart(2, "0")}
             </div>

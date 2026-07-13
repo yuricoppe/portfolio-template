@@ -32,6 +32,7 @@ export const fallbackGlobal: Global = {
 export const fallbackHome: HomePage = {
   heroTitle: "O design está em tudo. Use-o ao seu favor!",
   heroImageUrl: "/img/hero.svg",
+  heroVideoUrl: "",
   heroGradient:
     "radial-gradient(120% 90% at 65% 30%, #3d43b8 0%, #23255e 45%, #0b0b16 100%)",
   statementLead: "Somos o Colativo.",

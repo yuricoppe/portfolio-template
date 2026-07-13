@@ -3,7 +3,7 @@ import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
-import ParallaxImage from "@/components/ParallaxImage";
+import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getHomePage, getProjects } from "@/lib/api";
@@ -28,8 +28,11 @@ export default async function Home() {
         className="relative min-h-[560px] overflow-hidden md:min-h-[720px]"
         style={{ height: "92vh", background: home.heroGradient }}
       >
-        {home.heroImageUrl && (
-          <ParallaxImage src={home.heroImageUrl} strength={4} />
+        {(home.heroVideoUrl || home.heroImageUrl) && (
+          <ParallaxMedia
+            src={home.heroVideoUrl || home.heroImageUrl}
+            strength={4}
+          />
         )}
         <div className="absolute bottom-10 left-5 z-20 max-w-[80%] text-2xl font-medium tracking-tight md:left-11 md:text-[32px]">
           <BlurText text={home.heroTitle} delay={200} stagger={80} />
@@ -65,7 +68,7 @@ export default async function Home() {
             className="group relative block h-[420px] overflow-hidden text-white md:h-[560px]"
             style={{ background: p.gradient }}
           >
-            {p.coverUrl && <ParallaxImage src={p.coverUrl} strength={5} />}
+            {p.coverUrl && <ParallaxMedia src={p.coverUrl} strength={5} />}
             <div className="absolute bottom-8 left-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:left-9">
               <div className="text-3xl font-medium md:text-5xl">{p.title}</div>
               <div className="mt-1.5 text-sm text-white/60">{p.category}</div>
@@ -131,7 +134,7 @@ function FeaturedCard({
       className="group sticky top-0 mb-2 block min-h-[500px] overflow-hidden text-white md:min-h-[600px]"
       style={{ height: "80vh", background: project.gradient }}
     >
-      {project.coverUrl && <ParallaxImage src={project.coverUrl} strength={5} />}
+      {project.coverUrl && <ParallaxMedia src={project.coverUrl} strength={5} />}
       <div className="absolute bottom-9 left-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:left-11">
         <div className="text-4xl font-medium tracking-tight md:text-[64px]">
           {project.title}

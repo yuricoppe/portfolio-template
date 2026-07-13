@@ -41,7 +41,7 @@
     "cover": {
       "type": "media",
       "multiple": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": ["images", "videos"]
     },
     "sections": {
       "type": "dynamiczone",
