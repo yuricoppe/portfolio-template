@@ -40,7 +40,7 @@ export default async function Home() {
         <div className="hero-arrow absolute bottom-10 right-5 z-20 text-xl md:right-11">
           ↓
         </div>
-        <GradualBlur position="bottom" height={110} />
+        <GradualBlur position="bottom" height={110} blur={64} />
       </div>
 
       {/* Statement + sticky featured cases */}
@@ -99,9 +99,8 @@ export default async function Home() {
           {home.services.map((s, i) => (
             <Reveal key={s.title} delay={i * 90}>
               <div
-                className={`service-row flex items-center justify-between py-6 ${
-                  i < home.services.length - 1 ? "border-b border-[#222]" : ""
-                }`}
+                className={`service-row flex items-center justify-between py-6 ${i < home.services.length - 1 ? "border-b border-[#222]" : ""
+                  }`}
               >
                 <span className="flex items-center gap-3">
                   <span className="service-arrow text-muted">→</span>

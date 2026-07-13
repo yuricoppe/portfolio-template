@@ -5,7 +5,7 @@
 export default function GradualBlur({
   position = "bottom",
   height = 120,
-  blur = 14,
+  blur = 40,
 }: {
   position?: "top" | "bottom";
   height?: number;
@@ -18,9 +18,8 @@ export default function GradualBlur({
   return (
     <div
       aria-hidden
-      className={`pointer-events-none absolute inset-x-0 z-10 ${
-        isBottom ? "bottom-0" : "top-0"
-      }`}
+      className={`pointer-events-none absolute inset-x-0 z-10 ${isBottom ? "bottom-0" : "top-0"
+        }`}
       style={{
         height,
         backdropFilter: `blur(${blur}px)`,
