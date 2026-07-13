@@ -5,9 +5,11 @@
 export default function GradualBlur({
   position = "bottom",
   height = 120,
+  blur = 14,
 }: {
   position?: "top" | "bottom";
   height?: number;
+  blur?: number;
 }) {
   const isBottom = position === "bottom";
   const gradient = isBottom
@@ -21,8 +23,8 @@ export default function GradualBlur({
       }`}
       style={{
         height,
-        backdropFilter: "blur(6px)",
-        WebkitBackdropFilter: "blur(6px)",
+        backdropFilter: `blur(${blur}px)`,
+        WebkitBackdropFilter: `blur(${blur}px)`,
         maskImage: gradient,
         WebkitMaskImage: gradient,
       }}
