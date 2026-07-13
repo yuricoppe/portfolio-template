@@ -27,24 +27,28 @@ export default async function Home() {
 
       {/* conteúdo acima do footer sticky (reveal no fim do scroll) */}
       <div className="relative z-10 bg-ink">
-      {/* Hero */}
-      <div
-        className="relative min-h-[560px] overflow-hidden md:min-h-[720px]"
-        style={{ height: "92vh", background: home.heroGradient }}
-      >
-        {(home.heroVideoUrl || home.heroImageUrl) && (
-          <ParallaxMedia
-            src={home.heroVideoUrl || home.heroImageUrl}
-            strength={4}
-          />
-        )}
-        <div className="type-display absolute bottom-10 left-5 z-20 max-w-[80%] text-2xl tracking-tight md:left-11 md:text-[32px]">
-          <BlurText text={home.heroTitle} delay={200} stagger={80} />
+      {/* Hero (wrapper sem overflow para a seta atravessar a divisa) */}
+      <div className="relative">
+        <div
+          className="relative min-h-[560px] overflow-hidden md:min-h-[720px]"
+          style={{ height: "92vh", background: home.heroGradient }}
+        >
+          {(home.heroVideoUrl || home.heroImageUrl) && (
+            <ParallaxMedia
+              src={home.heroVideoUrl || home.heroImageUrl}
+              strength={4}
+            />
+          )}
+          <div className="type-display absolute bottom-10 left-5 z-20 max-w-[80%] text-2xl tracking-tight md:left-11 md:text-[32px]">
+            <BlurText text={home.heroTitle} delay={200} stagger={80} />
+          </div>
+          <GradualBlur position="bottom" height={110} />
         </div>
-        <div className="absolute bottom-10 right-5 z-20 text-white md:right-11">
+        {/* seta de scroll centrada na divisa entre o hero e a próxima
+            seção, com pill de fundo na cor da seção de baixo */}
+        <div className="absolute bottom-0 left-1/2 z-20 -translate-x-1/2 translate-y-1/2 rounded-full bg-ink p-2 text-white">
           <ScrollCue />
         </div>
-        <GradualBlur position="bottom" height={110} />
       </div>
 
       {/* Statement + sticky featured cases */}
