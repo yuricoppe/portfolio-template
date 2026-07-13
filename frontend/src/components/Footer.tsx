@@ -5,7 +5,10 @@ import type { Global } from "@/lib/types";
 
 export default function Footer({ global }: { global: Global }) {
   return (
-    <footer className="relative overflow-hidden bg-paper px-page pb-12 pt-24 text-[#0a0a0a] md:pt-40">
+    <footer
+      data-light-section
+      className="relative overflow-hidden bg-paper px-page pb-12 pt-24 text-[#0a0a0a] md:pt-40"
+    >
       <Spotlight color="rgba(61, 67, 184, 0.08)" size={560} />
       <Reveal>
         <h2 className="max-w-5xl text-4xl font-medium leading-[1.15] tracking-tight md:text-[56px]">

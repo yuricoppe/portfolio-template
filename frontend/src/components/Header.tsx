@@ -22,6 +22,28 @@ export default function Header({
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [onLight, setOnLight] = useState(false);
+
+  // Inverte as cores do header quando uma seção clara (ex.: footer
+  // branco, marcada com data-light-section) passa sob a barra fixa.
+  // Nota: mix-blend-difference não serve aqui — além de o header ser
+  // um stacking context próprio (o blend não enxerga a página), um
+  // filho com blend impede o backdrop-filter irmão de amostrar o
+  // conteúdo atrás (backdrop root do Chromium).
+  useEffect(() => {
+    const sections = document.querySelectorAll("[data-light-section]");
+    if (sections.length === 0) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const anyUnderHeader = entries.some((e) => e.isIntersecting);
+        setOnLight(anyUnderHeader);
+      },
+      // observa apenas a faixa do header no topo do viewport
+      { rootMargin: `0px 0px -${window.innerHeight - 96}px 0px` },
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, [pathname]);
 
   // trava o scroll do body enquanto o menu está aberto
   useEffect(() => {
@@ -85,13 +107,17 @@ export default function Header({
             <GradualBlur position="top" height={110} />
           </div>
         )}
-        <div className="relative flex items-center justify-between px-page py-6 md:py-8">
+        <div
+          className={`relative flex items-center justify-between px-page py-6 transition-colors duration-300 md:py-8 ${
+            onLight && !open ? "text-[#0a0a0a]" : "text-white"
+          }`}
+        >
           <Link
             href="/"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-3 text-white mix-blend-difference"
+            className="flex items-center gap-3"
           >
-            <span className="inline-block h-[22px] w-[22px] rounded-[7px] bg-white" />
+            <span className="inline-block h-[22px] w-[22px] rounded-[7px] bg-current transition-colors duration-300" />
             <span className="text-[15px] font-medium tracking-[0.24em]">
               {siteName}
             </span>
@@ -102,15 +128,15 @@ export default function Header({
             aria-label={open ? "Fechar menu" : "Abrir menu"}
             aria-expanded={open}
             onClick={() => setOpen(!open)}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-[6px] mix-blend-difference"
+            className="flex h-10 w-10 flex-col items-center justify-center gap-[6px]"
           >
             <span
-              className={`block h-[2px] w-7 bg-white transition-transform duration-300 ${
+              className={`block h-[2px] w-7 bg-current transition-all duration-300 ${
                 open ? "translate-y-[4px] rotate-45" : ""
               }`}
             />
             <span
-              className={`block h-[2px] w-7 bg-white transition-transform duration-300 ${
+              className={`block h-[2px] w-7 bg-current transition-all duration-300 ${
                 open ? "-translate-y-[4px] -rotate-45" : ""
               }`}
             />
