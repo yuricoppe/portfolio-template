@@ -107,8 +107,10 @@ export default function Header({
             <GradualBlur position="top" height={110} />
           </div>
         )}
+        {/* z-20 > z-10 da faixa de blur: a linha pinta depois dela e
+            fica fora do backdrop, senão logo/hambúrguer são borrados */}
         <div
-          className={`relative flex items-center justify-between px-page py-6 transition-colors duration-300 md:py-8 ${onLight && !open ? "text-[#0a0a0a]" : "text-white"
+          className={`relative z-20 flex items-center justify-between px-page py-6 transition-colors duration-300 md:py-8 ${onLight && !open ? "text-[#0a0a0a]" : "text-white"
             }`}
         >
           <Link
