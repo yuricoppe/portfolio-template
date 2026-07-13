@@ -1,12 +1,12 @@
 "use client";
 
 import { useInView } from "@/lib/motion";
-import { scrambleChars, useScramble } from "@/components/ScrambleText";
+import { weightChars, useWeightHover } from "@/components/WeightText";
 
 // Título que entra palavra por palavra: blur -> nítido, com stagger.
 // O estado escondido só existe quando o JS está ativo (html.js no CSS),
 // então o texto permanece visível em SSR sem JavaScript.
-// As letras também reagem ao cursor com o efeito de scramble.
+// As letras também engrossam perto do cursor (eixo wght da Elms Sans).
 export default function BlurText({
   text,
   as: Tag = "span",
@@ -21,7 +21,7 @@ export default function BlurText({
   stagger?: number;
 }) {
   const [ref, inView] = useInView<HTMLElement>();
-  useScramble(ref);
+  useWeightHover(ref);
   const words = text.split(" ");
 
   return (
@@ -33,7 +33,7 @@ export default function BlurText({
           className={`blur-word ${inView ? "blur-word--in" : ""}`}
           style={{ transitionDelay: `${delay + i * stagger}ms` }}
         >
-          {scrambleChars(w)}
+          {weightChars(w)}
           {i < words.length - 1 ? " " : ""}
         </span>
       ))}

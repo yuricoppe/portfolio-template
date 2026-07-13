@@ -6,7 +6,7 @@ import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
-import ScrambleText from "@/components/ScrambleText";
+import WeightText from "@/components/WeightText";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getProject, getProjects } from "@/lib/api";
 import type { Section } from "@/lib/types";
@@ -97,7 +97,7 @@ export default async function ProjetoInterna({
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="flex items-baseline gap-3 px-5 text-center text-4xl font-medium tracking-tighter md:text-[64px]">
-              <ScrambleText text={next.title} />
+              <WeightText text={next.title} />
               <span className="inline-block transition-transform duration-500 ease-out group-hover:translate-x-3">
                 →
               </span>
@@ -181,9 +181,9 @@ function SectionBlock({ section }: { section: Section }) {
         <div className="px-page py-24 text-center md:py-[150px]">
           <Reveal>
             <p className="mx-auto max-w-[880px] text-2xl font-medium leading-[1.3] tracking-tight [text-wrap:balance] md:text-[40px]">
-              <ScrambleText text={section.quote} />{" "}
+              <WeightText text={section.quote} />{" "}
               <span className="text-muted">
-                <ScrambleText text={section.quoteMuted} />
+                <WeightText text={section.quoteMuted} />
               </span>
             </p>
             {section.author && (
@@ -201,7 +201,7 @@ function SectionBlock({ section }: { section: Section }) {
           {section.items.map((m, i) => (
             <Reveal key={m.label} delay={i * 100}>
               <div className="text-4xl font-medium tracking-tight md:text-[56px]">
-                <ScrambleText text={m.value} />
+                <WeightText text={m.value} />
               </div>
               <div className="mt-2.5 text-[15px] text-muted">{m.label}</div>
             </Reveal>

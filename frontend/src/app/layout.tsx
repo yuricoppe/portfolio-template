@@ -1,9 +1,23 @@
 import type { Metadata } from "next";
+import { Elms_Sans, Noto_Sans } from "next/font/google";
 import * as React from "react";
 import Cursor from "@/components/Cursor";
 import GlowTracker from "@/components/GlowTracker";
 import { getGlobal } from "@/lib/api";
 import "./globals.css";
+
+// Fonte principal (títulos/UI): Elms Sans variável, eixo wght 100–900 —
+// o eixo é usado no efeito de peso por proximidade dos títulos.
+const elms = Elms_Sans({
+  subsets: ["latin"],
+  variable: "--font-elms",
+});
+
+// Fonte dos parágrafos: Noto Sans.
+const noto = Noto_Sans({
+  subsets: ["latin"],
+  variable: "--font-noto",
+});
 
 // Com experimental.viewTransition, o React vendorado pelo Next exporta
 // ViewTransition — os @types/react estáveis ainda não o tipam.
@@ -34,7 +48,11 @@ export default function RootLayout({
   return (
     // suppressHydrationWarning: o script inline abaixo adiciona a classe
     // "js" ao <html> antes da hidratação, o que é intencional.
-    <html lang="pt-BR" className="h-full antialiased" suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      className={`${elms.variable} ${noto.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <body className="flex min-h-full flex-col">
         {/* Marca html.js antes do primeiro paint: os estados iniciais
             ocultos das animações só se aplicam quando o JS está ativo,

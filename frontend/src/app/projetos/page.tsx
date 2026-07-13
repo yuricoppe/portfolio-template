@@ -3,7 +3,7 @@ import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
-import ScrambleText from "@/components/ScrambleText";
+import WeightText from "@/components/WeightText";
 import { getGlobal, getProjects } from "@/lib/api";
 
 export const metadata = {
@@ -48,13 +48,13 @@ export default async function Projetos() {
             <div className="absolute inset-0 flex flex-col items-start justify-center px-5 md:px-11">
               <div className="transition-transform duration-500 ease-out group-hover:-translate-y-1">
                 <div className="text-2xl font-medium tracking-tight md:text-[32px]">
-                  <ScrambleText text={p.title} />
+                  <WeightText text={p.title} />
                 </div>
                 <div className="mt-1.5 text-[15px] text-white/60">
                   {p.category} · {p.year}
                 </div>
               </div>
-              <div className="glow-border glow-border--dark btn-elastic mt-8 rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
+              <div className="glow-border glow-border--dark btn-elastic mt-8 inline-flex h-14 items-center rounded-[12px] bg-white px-8 text-[20px] font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
                 {global.labelViewCase}
               </div>
             </div>

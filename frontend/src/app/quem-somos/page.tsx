@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
-import ScrambleText from "@/components/ScrambleText";
+import WeightText from "@/components/WeightText";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getAboutPage, getGlobal } from "@/lib/api";
 
@@ -79,7 +79,7 @@ export default async function QuemSomos() {
                   {s.number}
                 </span>
                 <span className="text-2xl font-medium tracking-tight md:text-[26px]">
-                  <ScrambleText text={s.title} />
+                  <WeightText text={s.title} />
                 </span>
                 <p className="text-[17px] leading-[1.6] text-[#9a9a9a] transition-colors duration-500 group-hover:text-soft">
                   {s.description}

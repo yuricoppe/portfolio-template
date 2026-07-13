@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import GradualBlur from "@/components/GradualBlur";
-import ScrambleText from "@/components/ScrambleText";
+import WeightText from "@/components/WeightText";
 
 const links = [
   { href: "/projetos", label: "Projetos" },
@@ -88,7 +88,7 @@ export default function Header({
               <Link
                 key={l.href}
                 href={l.href}
-                className={`group flex items-baseline gap-5 border-b border-line py-6 text-4xl font-medium text-white transition-colors last:border-b-0 hover:text-white sm:py-8 sm:text-6xl md:text-7xl ${
+                className={`group relative flex items-baseline gap-5 border-b border-line py-6 text-4xl font-medium text-white transition-colors last:border-b-0 hover:text-white sm:py-8 sm:text-6xl md:text-7xl ${
                   phase === "closing" ? "menu-item--out" : "menu-item"
                 }`}
                 style={{
@@ -98,6 +98,23 @@ export default function Header({
                       : `${100 + i * 80}ms`,
                 }}
               >
+                {/* linha que se desenha sob o item no hover */}
+                <svg
+                  aria-hidden
+                  className="menu-underline absolute bottom-0 left-0 h-[2px] w-full"
+                  viewBox="0 0 100 2"
+                  preserveAspectRatio="none"
+                >
+                  <line
+                    x1="0"
+                    y1="1"
+                    x2="100"
+                    y2="1"
+                    stroke="white"
+                    strokeWidth="2"
+                    pathLength={1}
+                  />
+                </svg>
                 <span className="text-sm font-normal text-faint sm:text-base">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -108,7 +125,7 @@ export default function Header({
                       : "text-white/70 transition-colors duration-300 group-hover:text-white"
                   }
                 >
-                  <ScrambleText text={l.label} radius={64} />
+                  <WeightText text={l.label} />
                 </span>
                 <span className="ml-auto translate-x-2 text-2xl text-white/0 transition-all duration-300 group-hover:translate-x-0 group-hover:text-white/60 sm:text-4xl">
                   →

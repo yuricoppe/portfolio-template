@@ -7,7 +7,9 @@
   --color-soft: #c9c9c9;
   --color-faint: #777777;
   --color-line: #1c1c1c;
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Elms Sans para títulos/UI; Noto Sans para parágrafos */
+  --font-sans: var(--font-elms), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: var(--font-noto), "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 html {
@@ -29,6 +31,11 @@ body {
     padding-left: 44px;
     padding-right: 44px;
   }
+}
+
+/* parágrafos usam a fonte de corpo (Noto Sans) */
+p {
+  font-family: var(--font-body);
 }
 
 input,
@@ -127,6 +134,57 @@ textarea:focus {
 .nav-link[data-active="true"]::after {
   transform: scaleX(1);
   transform-origin: left center;
+}
+
+/* ---------- Peso por proximidade (fonte variável) ---------- */
+
+.wf-char {
+  display: inline-block;
+  transition: font-variation-settings 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- SVG: seta de scroll com stroke reveal ---------- */
+
+.cue-pill {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: cue-draw 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+}
+@keyframes cue-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+/* a linha da seta desenha, segura e se desfaz continuamente */
+.cue-arrow {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: cue-arrow-cycle 2.6s cubic-bezier(0.45, 0, 0.35, 1) 1.4s infinite;
+}
+@keyframes cue-arrow-cycle {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  38% {
+    stroke-dashoffset: 0;
+  }
+  62% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
+/* ---------- SVG: sublinhado do menu desenhando no hover ---------- */
+
+.menu-underline line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .menu-underline line {
+  stroke-dashoffset: 0;
 }
 
 /* ---------- Botões com expansão elástica ---------- */
@@ -382,8 +440,15 @@ textarea:focus {
   .service-row .service-arrow,
   .nav-link::after,
   .glow-border::before,
-  .btn-elastic {
+  .btn-elastic,
+  .wf-char,
+  .menu-underline line {
     transition: none;
+  }
+  .cue-pill,
+  .cue-arrow {
+    animation: none;
+    stroke-dashoffset: 0;
   }
   .btn-elastic:hover,
   .btn-elastic:active {

@@ -5,7 +5,8 @@ import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
-import ScrambleText from "@/components/ScrambleText";
+import ScrollCue from "@/components/ScrollCue";
+import WeightText from "@/components/WeightText";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getHomePage, getProjects } from "@/lib/api";
 import type { Global, Project } from "@/lib/types";
@@ -40,8 +41,8 @@ export default async function Home() {
         <div className="absolute bottom-10 left-5 z-20 max-w-[80%] text-2xl font-medium tracking-tight md:left-11 md:text-[32px]">
           <BlurText text={home.heroTitle} delay={200} stagger={80} />
         </div>
-        <div className="hero-arrow absolute bottom-10 right-5 z-20 text-xl md:right-11">
-          ↓
+        <div className="absolute bottom-10 right-5 z-20 text-white md:right-11">
+          <ScrollCue />
         </div>
         <GradualBlur position="bottom" height={110} />
       </div>
@@ -74,7 +75,7 @@ export default async function Home() {
             {p.coverUrl && <ParallaxMedia src={p.coverUrl} strength={5} />}
             <div className="absolute inset-0 flex flex-col items-start justify-center px-5 transition-transform duration-500 ease-out group-hover:-translate-y-1 md:px-9">
               <div className="text-3xl font-medium md:text-5xl">
-                <ScrambleText text={p.title} />
+                <WeightText text={p.title} />
               </div>
               <div className="mt-1.5 text-sm text-white/60">{p.category}</div>
             </div>
@@ -85,7 +86,7 @@ export default async function Home() {
       <div className="flex justify-center px-page pt-14">
         <Link
           href="/projetos"
-          className="glow-border btn-elastic rounded-[10px] bg-white px-7 py-3.5 text-[15px] font-medium text-[#0a0a0a] hover:bg-[#e6e6e6]"
+          className="glow-border btn-elastic inline-flex h-14 items-center rounded-[12px] bg-white px-9 text-[20px] font-medium text-[#0a0a0a] hover:bg-[#e6e6e6]"
         >
           {global.labelViewAll}
         </Link>
@@ -95,10 +96,10 @@ export default async function Home() {
       <div className="grid grid-cols-1 gap-10 px-page py-24 md:grid-cols-2 md:gap-[60px] md:py-[150px]">
         <Reveal>
           <h2 className="text-3xl font-medium leading-[1.2] tracking-tight md:text-[40px]">
-            <ScrambleText text={home.servicesLead} />
+            <WeightText text={home.servicesLead} />
             <br />
             <span className="text-muted">
-              <ScrambleText text={home.servicesMuted} />
+              <WeightText text={home.servicesMuted} />
             </span>
           </h2>
         </Reveal>
@@ -111,7 +112,7 @@ export default async function Home() {
               >
                 <span className="flex items-center gap-3">
                   <span className="service-arrow text-muted">→</span>
-                  <ScrambleText text={s.title} />
+                  <WeightText text={s.title} />
                 </span>
                 <span className="text-[#666]">
                   {String(i + 1).padStart(2, "0")}
@@ -145,13 +146,13 @@ function FeaturedCard({
       <div className="absolute inset-0 flex flex-col items-start justify-center px-5 md:px-11">
         <div className="transition-transform duration-500 ease-out group-hover:-translate-y-1">
           <div className="text-4xl font-medium tracking-tight md:text-[64px]">
-            <ScrambleText text={project.title} />
+            <WeightText text={project.title} />
           </div>
           <div className="mt-1.5 text-[15px] text-white/60">
             {project.category}
           </div>
         </div>
-        <div className="glow-border glow-border--dark btn-elastic mt-8 rounded-[10px] bg-white px-6 py-3 text-sm font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
+        <div className="glow-border glow-border--dark btn-elastic mt-8 inline-flex h-14 items-center rounded-[12px] bg-white px-8 text-[20px] font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
           {global.labelViewCase}
         </div>
       </div>
