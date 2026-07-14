@@ -1,8 +1,11 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { hasFinePointer, prefersReducedMotion } from "@/lib/motion";
+
+const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 // Scroll suave inercial (desktop): intercepta o wheel e anima a
 // posição real com lerp em requestAnimationFrame. Como usa
@@ -11,6 +14,9 @@ import { hasFinePointer, prefersReducedMotion } from "@/lib/motion";
 // Teclado, touch e navegação por âncora seguem nativos.
 export default function SmoothScroll() {
   const pathname = usePathname();
+  const router = useRouter();
+  const routerRef = useRef(router);
+  routerRef.current = router;
   const stopRef = useRef<(() => void) | null>(null);
 
   // Troca de rota: para a animação imediatamente, senão o loop cancela
@@ -90,12 +96,56 @@ export default function SmoothScroll() {
       target = window.scrollY;
     };
 
+    // Navegação interna com a página rolada: sobe suavemente até o
+    // topo (ease-in-out, duração proporcional à distância) e só então
+    // navega — a View Transition assume dali. preventDefault na fase
+    // de captura faz o <Link> do Next ignorar o clique.
+    let navRaf = 0;
+    const animateToTopThen = (done: () => void) => {
+      stopRef.current?.();
+      const start = window.scrollY;
+      const duration = Math.min(900, 400 + start * 0.15);
+      const t0 = performance.now();
+      const step = (now: number) => {
+        const t = Math.min(1, (now - t0) / duration);
+        window.scrollTo({
+          top: start * (1 - easeInOutCubic(t)),
+          behavior: "instant",
+        });
+        if (t < 1) {
+          navRaf = requestAnimationFrame(step);
+        } else {
+          done();
+        }
+      };
+      navRaf = requestAnimationFrame(step);
+    };
+
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const t = e.target;
+      if (!(t instanceof Element)) return;
+      const link = t.closest<HTMLAnchorElement>('a[href^="/"]');
+      if (!link || link.target === "_blank") return;
+      // links do menu fullscreen navegam direto (o painel cobre a tela)
+      if (link.closest("[data-menu-panel]")) return;
+      if (window.scrollY < 40) return;
+      const href = link.getAttribute("href");
+      if (!href) return;
+      e.preventDefault();
+      animateToTopThen(() => routerRef.current.push(href));
+    };
+
+    document.addEventListener("click", onClick, true);
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
+      document.removeEventListener("click", onClick, true);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(navRaf);
     };
   }, []);
 

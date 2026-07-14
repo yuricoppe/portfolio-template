@@ -79,6 +79,7 @@ export default function Header({
       {/* menu fullscreen (permanece montado durante a animação de saída) */}
       {mounted && (
         <div
+          data-menu-panel
           className={`fixed inset-0 z-40 flex flex-col justify-center bg-[#070707]/97 px-page backdrop-blur-2xl ${
             phase === "closing" ? "menu-panel--out" : "menu-panel"
           }`}
