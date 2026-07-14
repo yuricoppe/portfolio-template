@@ -22,17 +22,6 @@ const noto = Noto_Sans({
   variable: "--font-noto",
 });
 
-// Com experimental.viewTransition, o React vendorado pelo Next exporta
-// ViewTransition — os @types/react estáveis ainda não o tipam.
-const ViewTransition = (
-  React as unknown as {
-    ViewTransition: React.ComponentType<{
-      children: React.ReactNode;
-      name?: string;
-    }>;
-  }
-).ViewTransition;
-
 export async function generateMetadata(): Promise<Metadata> {
   const global = await getGlobal();
   const name = global.siteName.toLowerCase();
@@ -65,7 +54,12 @@ export default function RootLayout({
             __html: "document.documentElement.classList.add('js')",
           }}
         />
-        <ViewTransition name="page">{children}</ViewTransition>
+        {/* A troca de rota é uma navegação client comum: o PageTransition
+            cobre a tela com os quadrados pretos e o swap do DOM acontece
+            por baixo da cobertura. (Sem <ViewTransition>: seus pseudo-
+            elementos renderizam num top layer acima do overlay, deixando
+            a página nova piscar sobre os quadrados antes de sumirem.) */}
+        {children}
         <Cursor />
         <GlowTracker />
         <Scrollbar />

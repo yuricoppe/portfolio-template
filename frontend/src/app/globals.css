@@ -487,14 +487,9 @@ html:not(.js) .stx-fallback {
 /* ---------- Transição de página (quadrados pretos) ----------
    A troca de rota é comandada por PageTransition: uma grade de
    quadrados pretos varre a tela de cima para baixo, cobre a troca do
-   DOM e revela a página nova. A View Transition do React fica só como
-   swap instantâneo (escondido atrás da cobertura) — sem o antigo
-   blur/translate, que competiria com a grade. */
-
-::view-transition-old(page),
-::view-transition-new(page) {
-  animation: none;
-}
+   DOM (navegação client comum, sem View Transitions) e revela a página
+   nova. Os quadrados aparecem/somem por opacidade, como as células da
+   máscara SVG dos cards. */
 
 .pt-overlay {
   position: fixed;
@@ -550,10 +545,6 @@ html:not(.js) .stx-fallback {
   .menu-item,
   .menu-panel--out,
   .menu-item--out {
-    animation: none;
-  }
-  ::view-transition-old(page),
-  ::view-transition-new(page) {
     animation: none;
   }
   .service-row,
