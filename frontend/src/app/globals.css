@@ -12,9 +12,10 @@
   --font-body: var(--font-noto), "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Sem scroll-behavior: smooth global — o SmoothScroll cuida do wheel
+   e os saltos programáticos (ToC, âncoras) passam behavior: "smooth"
+   explicitamente. O smooth global fazia o reset de scroll do Next na
+   navegação virar uma animação que brigava com o loop de inércia. */
 
 /* Sistema tipográfico: Noto Sans como base (cobre todo texto pequeno,
    <= 16px: labels, categorias, meta, formulário, números do menu);
@@ -482,9 +483,6 @@ textarea:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   .reveal,
   .blur-word,
   .srt-word,

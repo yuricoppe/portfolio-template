@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { hasFinePointer, prefersReducedMotion } from "@/lib/motion";
 
 // Scroll suave inercial (desktop): intercepta o wheel e anima a
@@ -9,6 +10,15 @@ import { hasFinePointer, prefersReducedMotion } from "@/lib/motion";
 // e a scrollbar customizada continuam funcionando sem adaptação.
 // Teclado, touch e navegação por âncora seguem nativos.
 export default function SmoothScroll() {
+  const pathname = usePathname();
+  const stopRef = useRef<(() => void) | null>(null);
+
+  // Troca de rota: para a animação imediatamente, senão o loop cancela
+  // o scroll-to-top do Next e arrasta a página nova até o alvo antigo.
+  useEffect(() => {
+    stopRef.current?.();
+  }, [pathname]);
+
   useEffect(() => {
     if (!hasFinePointer() || prefersReducedMotion()) return;
 
@@ -71,6 +81,13 @@ export default function SmoothScroll() {
     // teclado, âncoras): re-sincroniza o alvo para não puxar de volta
     const onScroll = () => {
       if (!animating) target = window.scrollY;
+    };
+
+    stopRef.current = () => {
+      cancelAnimationFrame(raf);
+      animating = false;
+      lastSet = -1;
+      target = window.scrollY;
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
