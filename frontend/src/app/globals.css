@@ -459,6 +459,31 @@ textarea:focus {
   animation: menu-item-out 0.32s cubic-bezier(0.55, 0, 0.55, 0.2) both;
 }
 
+/* ---------- Scroll transition dos projetos (máscara SVG) ----------
+   ProjectScrollTransition: camadas fullscreen mascaradas por uma grade
+   de células que abre com o scroll. Os estados animados (máscara e
+   clip dos textos) só se aplicam com JS ativo (html.js); sem JS o
+   palco some e vale o fallback empilhado (.stx-fallback) — idem com
+   prefers-reduced-motion (bloco no fim do arquivo). */
+
+.stx-fallback {
+  display: none;
+}
+html:not(.js) .stx-stage {
+  display: none;
+}
+html:not(.js) .stx-fallback {
+  display: block;
+}
+.js .stx-layer {
+  -webkit-mask: var(--stx-mask);
+  mask: var(--stx-mask);
+}
+.js .stx-txt {
+  clip-path: inset(100% 0% 0% 0%);
+  transform: translateY(40px);
+}
+
 /* ---------- Transição de página (View Transitions) ---------- */
 
 @keyframes page-out {
@@ -483,6 +508,12 @@ textarea:focus {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .stx-stage {
+    display: none;
+  }
+  .stx-fallback {
+    display: block;
+  }
   .reveal,
   .blur-word,
   .srt-word,

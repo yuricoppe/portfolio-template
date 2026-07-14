@@ -1,10 +1,8 @@
-import Link from "next/link";
 import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
 import FooterBlur from "@/components/FooterBlur";
 import Header from "@/components/Header";
-import ParallaxMedia from "@/components/ParallaxMedia";
-import WeightText from "@/components/WeightText";
+import ProjectScrollTransition from "@/components/ProjectScrollTransition";
 import { getGlobal, getProjects } from "@/lib/api";
 
 export const metadata = {
@@ -33,35 +31,12 @@ export default async function Projetos() {
           </h1>
         </div>
 
-        {projects.map((p, i) => (
-          <Link
-            key={p.slug}
-            data-toc={p.title}
-            href={`/projetos/${p.slug}`}
-            className={`group sticky top-0 block min-h-[500px] overflow-hidden text-white md:min-h-[620px] ${
-              i < projects.length - 1 ? "mb-2" : ""
-            }`}
-            style={{ height: "82vh", background: p.gradient }}
-          >
-            {p.coverUrl && <ParallaxMedia src={p.coverUrl} strength={5} />}
-            <div className="absolute left-5 top-10 text-[15px] text-white/60 md:left-11">
-              {String(i + 1).padStart(2, "0")}
-            </div>
-            <div className="absolute inset-0 flex flex-col items-start justify-center px-5 md:px-11">
-              <div className="transition-transform duration-500 ease-out group-hover:-translate-y-1">
-                <div className="type-display text-2xl tracking-tight md:text-[32px]">
-                  <WeightText text={p.title} />
-                </div>
-                <div className="mt-1.5 text-[15px] text-white/60">
-                  {p.category} · {p.year}
-                </div>
-              </div>
-              <div className="glow-border glow-border--dark btn-elastic type-display mt-8 inline-flex h-14 items-center rounded-[12px] bg-white px-8 text-[20px] font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
-                {global.labelViewCase}
-              </div>
-            </div>
-          </Link>
-        ))}
+        {/* showcase com scroll transition de máscara SVG (substitui os
+            cards sticky); as camadas abrem por cima do título sticky */}
+        <ProjectScrollTransition
+          projects={projects}
+          labelViewCase={global.labelViewCase}
+        />
       </div>
       <FooterBlur />
       </div>
