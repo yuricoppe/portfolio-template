@@ -5,12 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 
 // Transição de página: grade de quadrados pretos que varre a tela de
-// cima para baixo. Ao clicar num link interno, os quadrados entram
-// (linha a linha, topo primeiro) cobrindo o conteúdo; a rota troca por
-// trás da cobertura (com o scroll resetado ao topo, invisível); então
-// os quadrados saem na mesma ordem, revelando a página nova — a faixa
-// preta parece descer pela tela. Espelha a estética das máscaras dos
-// cards (ProjectScrollTransition), mas com <div>s + CSS transitions.
+// cima para baixo. Ao clicar num link interno, os quadrados aparecem
+// (por opacidade, linha a linha, topo primeiro) cobrindo o conteúdo; a
+// rota troca por trás da cobertura (com o scroll resetado ao topo,
+// invisível); então os quadrados somem na mesma ordem, revelando a
+// página nova. É a mesma estética das células da máscara SVG dos cards
+// (ProjectScrollTransition) — aparecendo/sumindo por opacidade — só que
+// com <div>s + CSS transitions em vez de <mask>.
 //
 // É este componente que passa a comandar a navegação interna (o
 // SmoothScroll deixou de interceptar cliques). Sem JS os links navegam

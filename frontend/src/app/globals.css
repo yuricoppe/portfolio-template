@@ -511,18 +511,18 @@ html:not(.js) .stx-fallback {
 .pt-overlay[data-phase="covered"] {
   pointer-events: auto;
 }
+/* mesma estética das células da máscara SVG dos cards: cada quadrado
+   aparece e some por opacidade (não por escala), escalonado topo→base */
 .pt-cell {
   background: #000;
-  transform: scale(0);
-  transform-origin: center;
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
+  opacity: 0;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+  will-change: opacity;
 }
-/* scale > 1 sobrepõe levemente os vizinhos e elimina frestas */
 .pt-overlay[data-phase="cover"] .pt-cell,
 .pt-overlay[data-phase="covered"] .pt-cell {
-  transform: scale(1.03);
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
