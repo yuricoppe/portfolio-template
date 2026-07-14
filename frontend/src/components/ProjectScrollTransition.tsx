@@ -8,12 +8,12 @@ import { prefersReducedMotion, useRafScroll } from "@/lib/motion";
 import type { Project } from "@/lib/types";
 
 // Showcase dos projetos com "scroll transition" de máscara SVG
-// (Codrops/Hiro-kiii, variação Column Grid): o palco alto mantém um
-// viewport sticky onde cada projeto é uma camada fullscreen mascarada
-// por uma grade de células que abre coluna a coluna (esquerda →
-// direita, ordem vertical aleatória) conforme o scroll, revelando a
-// camada sobre a anterior. Textos entram/saem por clip-path e uma
-// barra segmentada mostra o progresso.
+// (Codrops/Hiro-kiii): o palco alto mantém um viewport sticky onde
+// cada projeto é uma camada fullscreen mascarada por uma grade de
+// células que abre linha a linha (cima → baixo, ordem horizontal
+// aleatória) conforme o scroll, revelando a camada sobre a anterior.
+// Textos entram/saem por clip-path e uma barra segmentada mostra o
+// progresso.
 //
 // A grade vive em <mask> SVG (userSpaceOnUse, coordenadas em px do
 // viewport) aplicada à camada HTML via CSS `mask` — assim a camada
@@ -95,10 +95,10 @@ export default function ProjectScrollTransition({
 
         const cells: Cell[] = [];
         let orderIdx = 0;
-        for (let x = 0; x < cols; x++) {
-          // colunas em ordem, linhas embaralhadas dentro da coluna
-          const ys = shuffle(Array.from({ length: rows }, (_, y) => y));
-          for (const y of ys) {
+        for (let y = 0; y < rows; y++) {
+          // linhas em ordem (cima → baixo), colunas embaralhadas na linha
+          const xs = shuffle(Array.from({ length: cols }, (_, x) => x));
+          for (const x of xs) {
             const rect = document.createElementNS(SVG_NS, "rect");
             rect.setAttribute("x", String(x * cellW));
             rect.setAttribute("y", String(y * cellH));

@@ -3,6 +3,7 @@ import { Elms_Sans, Noto_Sans } from "next/font/google";
 import * as React from "react";
 import Cursor from "@/components/Cursor";
 import GlowTracker from "@/components/GlowTracker";
+import PageTransition from "@/components/PageTransition";
 import Scrollbar from "@/components/Scrollbar";
 import SmoothScroll from "@/components/SmoothScroll";
 import { getGlobal } from "@/lib/api";
@@ -69,6 +70,7 @@ export default function RootLayout({
         <GlowTracker />
         <Scrollbar />
         <SmoothScroll />
+        <PageTransition />
       </body>
     </html>
   );

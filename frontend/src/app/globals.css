@@ -484,27 +484,45 @@ html:not(.js) .stx-fallback {
   transform: translateY(40px);
 }
 
-/* ---------- Transição de página (View Transitions) ---------- */
+/* ---------- Transição de página (quadrados pretos) ----------
+   A troca de rota é comandada por PageTransition: uma grade de
+   quadrados pretos varre a tela de cima para baixo, cobre a troca do
+   DOM e revela a página nova. A View Transition do React fica só como
+   swap instantâneo (escondido atrás da cobertura) — sem o antigo
+   blur/translate, que competiria com a grade. */
 
-@keyframes page-out {
-  to {
-    opacity: 0;
-    filter: blur(10px);
-    transform: translateY(-16px);
-  }
-}
-@keyframes page-in {
-  from {
-    opacity: 0;
-    filter: blur(12px);
-    transform: translateY(26px);
-  }
-}
-::view-transition-old(page) {
-  animation: page-out 0.35s cubic-bezier(0.55, 0, 0.55, 0.2) both;
-}
+::view-transition-old(page),
 ::view-transition-new(page) {
-  animation: page-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+  animation: none;
+}
+
+.pt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  pointer-events: none;
+}
+.pt-overlay[data-phase="idle"] {
+  visibility: hidden;
+}
+/* enquanto cobre a tela, segura o clique; ao revelar já libera */
+.pt-overlay[data-phase="cover"],
+.pt-overlay[data-phase="covered"] {
+  pointer-events: auto;
+}
+.pt-cell {
+  background: #000;
+  transform: scale(0);
+  transform-origin: center;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+/* scale > 1 sobrepõe levemente os vizinhos e elimina frestas */
+.pt-overlay[data-phase="cover"] .pt-cell,
+.pt-overlay[data-phase="covered"] .pt-cell {
+  transform: scale(1.03);
 }
 
 @media (prefers-reduced-motion: reduce) {

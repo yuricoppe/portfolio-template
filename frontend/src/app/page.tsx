@@ -5,12 +5,12 @@ import FooterBlur from "@/components/FooterBlur";
 import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
+import ProjectScrollTransition from "@/components/ProjectScrollTransition";
 import Reveal from "@/components/Reveal";
 import ScrollCue from "@/components/ScrollCue";
 import WeightText from "@/components/WeightText";
 import ScrollRevealText from "@/components/ScrollRevealText";
 import { getGlobal, getHomePage, getProjects } from "@/lib/api";
-import type { Global, Project } from "@/lib/types";
 
 export default async function Home() {
   const [home, global, projects] = await Promise.all([
@@ -63,9 +63,12 @@ export default async function Home() {
             className="max-w-[1000px] text-3xl font-medium leading-[1.18] tracking-tight md:text-[56px]"
           />
         </div>
-        {featured.map((p) => (
-          <FeaturedCard key={p.slug} project={p} global={global} />
-        ))}
+        {/* mesmo scroll transition de máscara SVG usado em /projetos:
+            as camadas abrem por cima do statement sticky */}
+        <ProjectScrollTransition
+          projects={featured}
+          labelViewCase={global.labelViewCase}
+        />
       </div>
 
       {/* Secondary grid */}
@@ -135,36 +138,5 @@ export default async function Home() {
 
       <Footer global={global} />
     </div>
-  );
-}
-
-function FeaturedCard({
-  project,
-  global,
-}: {
-  project: Project;
-  global: Global;
-}) {
-  return (
-    <Link
-      href={`/projetos/${project.slug}`}
-      className="group sticky top-0 mb-2 block min-h-[500px] overflow-hidden text-white md:min-h-[600px]"
-      style={{ height: "80vh", background: project.gradient }}
-    >
-      {project.coverUrl && <ParallaxMedia src={project.coverUrl} strength={5} />}
-      <div className="absolute inset-0 flex flex-col items-start justify-center px-5 md:px-11">
-        <div className="transition-transform duration-500 ease-out group-hover:-translate-y-1">
-          <div className="type-display text-4xl tracking-tight md:text-[64px]">
-            <WeightText text={project.title} />
-          </div>
-          <div className="mt-1.5 text-[15px] text-white/60">
-            {project.category}
-          </div>
-        </div>
-        <div className="glow-border glow-border--dark btn-elastic type-display mt-8 inline-flex h-14 items-center rounded-[12px] bg-white px-8 text-[20px] font-medium text-[#0a0a0a] group-hover:bg-[#e6e6e6]">
-          {global.labelViewCase}
-        </div>
-      </div>
-    </Link>
   );
 }
