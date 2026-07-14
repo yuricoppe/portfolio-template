@@ -48,7 +48,10 @@ export default async function QuemSomos() {
       </div>
 
       {/* Manifesto */}
-      <div className="grid grid-cols-1 gap-12 px-page py-24 md:grid-cols-2 md:gap-20 md:py-[140px]">
+      <div
+        data-toc="Manifesto"
+        className="grid grid-cols-1 gap-12 px-page py-24 md:grid-cols-2 md:gap-20 md:py-[140px]"
+      >
         <ScrollRevealText
           lead={about.manifestoLead}
           muted={about.manifestoMuted}
@@ -64,7 +67,7 @@ export default async function QuemSomos() {
       </div>
 
       {/* Process */}
-      <div className="px-page pb-24 md:pb-[140px]">
+      <div data-toc="Como trabalhamos" className="px-page pb-24 md:pb-[140px]">
         <div className="mb-9 text-sm tracking-[0.08em] text-faint">
           COMO TRABALHAMOS
         </div>

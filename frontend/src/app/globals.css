@@ -56,6 +56,45 @@ textarea:focus {
   border-color: #888;
 }
 
+/* ---------- Scrollbar customizada (desktop) ----------
+   A nativa fica escondida em ponteiro fino: assim, travar o scroll
+   ao abrir o menu não remove a scrollbar nem desloca o layout. */
+
+@media (pointer: fine) {
+  html {
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.85);
+  transition: background-color 0.3s ease;
+}
+.scrollbar-toc {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background-color 0.2s ease;
+}
+.scrollbar-toc:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+/* sobre a seção clara (footer), o thumb e o ToC invertem */
+.scrollbar--on-light .scrollbar-thumb {
+  background: rgba(10, 10, 10, 0.85);
+}
+.scrollbar--on-light .scrollbar-toc {
+  background: rgba(10, 10, 10, 0.08);
+  color: #0a0a0a;
+}
+.scrollbar--on-light .scrollbar-toc:hover {
+  background: rgba(10, 10, 10, 0.16);
+}
+
 /* ---------- Cursor customizado ---------- */
 
 .has-custom-cursor,

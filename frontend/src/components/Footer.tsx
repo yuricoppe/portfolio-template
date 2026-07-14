@@ -11,6 +11,7 @@ export default function Footer({ global }: { global: Global }) {
     // seção o revela conforme o scroll chega ao fim.
     <footer
       data-light-section
+      data-toc="Contato"
       className="sticky bottom-0 overflow-hidden bg-paper px-page pb-12 pt-24 text-[#0a0a0a] md:pt-40"
     >
       <Spotlight color="rgba(61, 67, 184, 0.08)" size={560} />

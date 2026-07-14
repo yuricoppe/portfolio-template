@@ -36,6 +36,7 @@ export default async function Projetos() {
         {projects.map((p, i) => (
           <Link
             key={p.slug}
+            data-toc={p.title}
             href={`/projetos/${p.slug}`}
             className={`group sticky top-0 block min-h-[500px] overflow-hidden text-white md:min-h-[620px] ${
               i < projects.length - 1 ? "mb-2" : ""

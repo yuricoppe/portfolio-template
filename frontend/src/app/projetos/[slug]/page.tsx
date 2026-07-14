@@ -144,6 +144,7 @@ function SectionBlock({ section }: { section: Section }) {
     case "text-columns":
       return (
         <div
+          data-toc="Desafio & Solução"
           className={`grid grid-cols-1 gap-14 px-page py-24 md:gap-20 md:py-[130px] ${
             section.columns.length > 1 ? "md:grid-cols-2" : ""
           }`}
@@ -199,7 +200,10 @@ function SectionBlock({ section }: { section: Section }) {
 
     case "metrics":
       return (
-        <div className="grid grid-cols-1 gap-10 border-b border-line px-page py-20 sm:grid-cols-3 sm:gap-8 md:py-[110px]">
+        <div
+          data-toc="Resultados"
+          className="grid grid-cols-1 gap-10 border-b border-line px-page py-20 sm:grid-cols-3 sm:gap-8 md:py-[110px]"
+        >
           {section.items.map((m, i) => (
             <Reveal key={m.label} delay={i * 100}>
               <div className="type-display text-4xl tracking-tight md:text-[56px]">
