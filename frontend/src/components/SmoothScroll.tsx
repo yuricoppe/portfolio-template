@@ -104,7 +104,7 @@ export default function SmoothScroll() {
     const animateToTopThen = (done: () => void) => {
       stopRef.current?.();
       const start = window.scrollY;
-      const duration = Math.min(900, 400 + start * 0.15);
+      const duration = Math.min(1500, 700 + start * 0.25);
       const t0 = performance.now();
       const step = (now: number) => {
         const t = Math.min(1, (now - t0) / duration);

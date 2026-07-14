@@ -80,18 +80,16 @@ export default function Header({
       {mounted && (
         <div
           data-menu-panel
-          className={`fixed inset-0 z-40 flex flex-col justify-center bg-[#070707]/97 px-page backdrop-blur-2xl ${
-            phase === "closing" ? "menu-panel--out" : "menu-panel"
-          }`}
+          className={`fixed inset-0 z-40 flex flex-col justify-center bg-[#070707]/80 px-page backdrop-blur-3xl ${phase === "closing" ? "menu-panel--out" : "menu-panel"
+            }`}
         >
           <nav className="flex flex-col">
             {links.map((l, i) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className={`group type-display relative flex items-baseline gap-5 border-b border-line py-6 text-4xl text-white transition-colors last:border-b-0 hover:text-white sm:py-8 sm:text-6xl md:text-7xl ${
-                  phase === "closing" ? "menu-item--out" : "menu-item"
-                }`}
+                className={`group type-display relative flex items-baseline gap-5 border-b border-line py-6 text-4xl text-white transition-colors last:border-b-0 hover:text-white sm:py-8 sm:text-6xl md:text-7xl ${phase === "closing" ? "menu-item--out" : "menu-item"
+                  }`}
                 style={{
                   animationDelay:
                     phase === "closing"
@@ -118,9 +116,8 @@ export default function Header({
             ))}
           </nav>
           <div
-            className={`absolute bottom-10 left-5 right-5 flex flex-col gap-1 text-sm text-faint md:left-11 md:right-11 md:flex-row md:justify-between ${
-              phase === "closing" ? "menu-item--out" : "menu-item"
-            }`}
+            className={`absolute bottom-10 left-5 right-5 flex flex-col gap-1 text-sm text-faint md:left-11 md:right-11 md:flex-row md:justify-between ${phase === "closing" ? "menu-item--out" : "menu-item"
+              }`}
             style={{ animationDelay: phase === "closing" ? "0ms" : "420ms" }}
           >
             <span>ola@colativo.com.br</span>
