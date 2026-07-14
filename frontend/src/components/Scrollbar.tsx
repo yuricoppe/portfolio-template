@@ -114,7 +114,12 @@ export default function Scrollbar() {
 
       const onMove = (ev: PointerEvent) => {
         const dy = ev.clientY - startY;
-        window.scrollTo(0, startScroll + dy * ((docH - vh) / (vh - h)));
+        window.scrollTo({
+          top: startScroll + dy * ((docH - vh) / (vh - h)),
+          // instant: sem isso o scroll-behavior smooth do CSS faz o
+          // drag "patinar" atrás do ponteiro
+          behavior: "instant",
+        });
       };
       const onUp = () => {
         dragging.current = false;
@@ -134,7 +139,7 @@ export default function Scrollbar() {
   return (
     <div
       ref={trackRef}
-      className="scrollbar-track fixed inset-y-0 right-0 z-[60] w-2 opacity-0 transition-opacity duration-300"
+      className="scrollbar-track fixed inset-y-0 right-1 z-[60] w-1 opacity-0 transition-opacity duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       // clique no trilho: pula para a posição proporcional
@@ -153,7 +158,7 @@ export default function Scrollbar() {
 
       <div
         ref={thumbRef}
-        className="scrollbar-thumb absolute right-0 w-2 rounded-full"
+        className="scrollbar-thumb absolute right-0 w-1 rounded-full"
       />
 
       {/* table of contents no hover do trilho */}

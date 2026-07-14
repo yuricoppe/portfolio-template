@@ -4,6 +4,7 @@ import * as React from "react";
 import Cursor from "@/components/Cursor";
 import GlowTracker from "@/components/GlowTracker";
 import Scrollbar from "@/components/Scrollbar";
+import SmoothScroll from "@/components/SmoothScroll";
 import { getGlobal } from "@/lib/api";
 import "./globals.css";
 
@@ -67,6 +68,7 @@ export default function RootLayout({
         <Cursor />
         <GlowTracker />
         <Scrollbar />
+        <SmoothScroll />
       </body>
     </html>
   );
