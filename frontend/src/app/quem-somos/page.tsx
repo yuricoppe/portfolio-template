@@ -1,5 +1,6 @@
 import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
+import FooterBlur from "@/components/FooterBlur";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
 import Reveal from "@/components/Reveal";
@@ -89,6 +90,7 @@ export default async function QuemSomos() {
           ))}
         </div>
       </div>
+      <FooterBlur />
       </div>
 
       <Footer global={global} />

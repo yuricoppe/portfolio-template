@@ -1,6 +1,7 @@
 import Link from "next/link";
 import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
+import FooterBlur from "@/components/FooterBlur";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
 import WeightText from "@/components/WeightText";
@@ -61,6 +62,7 @@ export default async function Projetos() {
           </Link>
         ))}
       </div>
+      <FooterBlur />
       </div>
 
       <Footer global={global} />
