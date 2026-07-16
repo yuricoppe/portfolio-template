@@ -71,29 +71,86 @@ textarea:focus {
 }
 
 .scrollbar-thumb {
+  width: 4px;
   background: rgba(255, 255, 255, 0.85);
-  transition: background-color 0.3s ease;
+  transition:
+    width 0.2s ease,
+    background-color 0.3s ease;
 }
-.scrollbar-toc {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+/* no hover do trilho o thumb cresce para 8px a partir do centro
+   (o translateX(-50%) inline mantém o eixo central fixo) */
+.scrollbar-track:hover .scrollbar-thumb {
+  width: 8px;
+}
+
+/* ---------- Table of contents (pill de bolinhas) ---------- */
+
+.scrollbar-pill {
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease;
 }
-.scrollbar-toc:hover {
-  background: rgba(255, 255, 255, 0.28);
+.scrollbar-dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 12px;
+  background: transparent;
 }
-/* sobre a seção clara (footer), o thumb e o ToC invertem */
-.scrollbar--on-light .scrollbar-thumb {
+.scrollbar-dot::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.35);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
+}
+.scrollbar-dot:hover::before {
+  transform: scale(1.5);
+  background: rgba(255, 255, 255, 0.95);
+}
+.scrollbar-dot.is-active::before {
+  background: rgba(255, 255, 255, 0.95);
+}
+.scrollbar-tip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  line-height: 1;
+  background: rgba(20, 20, 20, 0.9);
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 0.15s ease;
+}
+.scrollbar-dot:hover .scrollbar-tip {
+  opacity: 1;
+}
+
+/* sobre a seção clara (footer), thumb e pill invertem */
+.scrollbar-track.scrollbar--on-light .scrollbar-thumb {
   background: rgba(10, 10, 10, 0.85);
 }
-.scrollbar--on-light .scrollbar-toc {
-  background: rgba(10, 10, 10, 0.08);
-  color: #0a0a0a;
+.scrollbar-pill.scrollbar--on-light {
+  background: rgba(10, 10, 10, 0.06);
 }
-.scrollbar--on-light .scrollbar-toc:hover {
-  background: rgba(10, 10, 10, 0.16);
+.scrollbar-pill.scrollbar--on-light .scrollbar-dot::before {
+  background: rgba(10, 10, 10, 0.3);
+}
+.scrollbar-pill.scrollbar--on-light .scrollbar-dot:hover::before,
+.scrollbar-pill.scrollbar--on-light .scrollbar-dot.is-active::before {
+  background: rgba(10, 10, 10, 0.9);
 }
 
 /* ---------- Cursor customizado ---------- */
