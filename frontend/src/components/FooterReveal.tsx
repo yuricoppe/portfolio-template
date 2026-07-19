@@ -25,7 +25,7 @@ const BLIND_COUNT = 20; // fixo (SSR); espessura próxima das demais persianas
 const SWEEP_END = 1;
 // fração do sweep gasta escalonando o início das faixas; o restante é
 // a duração da abertura de cada uma
-const STAGGER_SPREAD = 0.7;
+const STAGGER_SPREAD = 0.3;
 // sobra de escala quando fechada, para não haver frestas de subpixel
 const OVERLAP = 1.04;
 
