@@ -8,6 +8,7 @@ import Scrollbar from "@/components/Scrollbar";
 import SmoothScroll from "@/components/SmoothScroll";
 import { getGlobal } from "@/lib/api";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
 
 // Fonte principal (títulos/UI): Elms Sans variável, eixo wght 100–900 —
 // o eixo é usado no efeito de peso por proximidade dos títulos.
@@ -65,6 +66,7 @@ export default function RootLayout({
         <Scrollbar />
         <SmoothScroll />
         <PageTransition />
+        <Analytics />
       </body>
     </html>
   );
