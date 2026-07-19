@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BlurText from "@/components/BlurText";
 import Footer from "@/components/Footer";
-import FooterBlur from "@/components/FooterBlur";
 import GradualBlur from "@/components/GradualBlur";
 import Header from "@/components/Header";
 import ParallaxMedia from "@/components/ParallaxMedia";
@@ -106,7 +105,6 @@ export default async function ProjetoInterna({
           </div>
         </Link>
       )}
-      <FooterBlur />
       </div>
 
       <Footer global={global} />

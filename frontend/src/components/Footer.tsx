@@ -1,4 +1,5 @@
 import Link from "next/link";
+import FooterReveal from "@/components/FooterReveal";
 import Reveal from "@/components/Reveal";
 import WeightText from "@/components/WeightText";
 import Spotlight from "@/components/Spotlight";
@@ -8,12 +9,14 @@ export default function Footer({ global }: { global: Global }) {
   return (
     // sticky bottom-0: o footer fica preso ao fundo do viewport, atrás do
     // conteúdo (que usa relative z-10 + bg opaco nas páginas), e a última
-    // seção o revela conforme o scroll chega ao fim.
+    // seção o revela conforme o scroll chega ao fim — através das
+    // persianas horizontais do FooterReveal.
     <footer
       data-light-section
       data-toc="Contato"
       className="sticky bottom-0 overflow-hidden bg-paper px-page pb-12 pt-24 text-[#0a0a0a] md:pt-40"
     >
+      <FooterReveal />
       <Spotlight color="rgba(61, 67, 184, 0.08)" size={560} />
       <Reveal>
         <h2 className="max-w-5xl text-4xl font-medium leading-[1.15] tracking-tight md:text-[56px]">

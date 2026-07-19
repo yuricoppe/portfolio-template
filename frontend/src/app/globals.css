@@ -580,8 +580,28 @@ html:not(.js) .stx-fallback {
   transform: scaleY(1.05);
 }
 
+/* ---------- Reveal do footer (persianas horizontais) ----------
+   FooterReveal: o footer sticky nasce coberto por faixas na cor do
+   fundo da página que encolhem por scaleY conforme o scroll o expõe.
+   Sem JS ou com prefers-reduced-motion o overlay some e o footer
+   aparece normal (revelado só pela borda do conteúdo). */
+
+.ftr-blind {
+  flex: 1;
+  width: 100%;
+  background: var(--color-ink);
+  transform: scaleY(1.04);
+  will-change: transform;
+}
+html:not(.js) .ftr-cover {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .stx-stage {
+    display: none;
+  }
+  .ftr-cover {
     display: none;
   }
   .stx-fallback {
