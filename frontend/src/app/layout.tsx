@@ -9,6 +9,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import { getGlobal } from "@/lib/api";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Fonte principal (títulos/UI): Elms Sans variável, eixo wght 100–900 —
 // o eixo é usado no efeito de peso por proximidade dos títulos.
@@ -67,6 +68,7 @@ export default function RootLayout({
         <SmoothScroll />
         <PageTransition />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
