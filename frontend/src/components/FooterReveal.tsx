@@ -19,11 +19,13 @@ import { useRafScroll } from "@/lib/motion";
 // em globals.css e o footer aparece normal.
 
 const BLIND_COUNT = 20; // fixo (SSR); espessura próxima das demais persianas
-// fração da exposição em que as persianas terminam de abrir (antes de
-// 1 para o topo do footer não chegar visível ainda coberto)
-const SWEEP_END = 0.85;
-// fração do sweep gasta escalonando o início das faixas
-const STAGGER_SPREAD = 0.6;
+// a varredura acompanha a exposição inteira: a última faixa termina de
+// abrir exatamente quando o footer está totalmente revelado (o scroll
+// no fim da página alinha a borda do conteúdo com o topo do footer)
+const SWEEP_END = 1;
+// fração do sweep gasta escalonando o início das faixas; o restante é
+// a duração da abertura de cada uma
+const STAGGER_SPREAD = 0.7;
 // sobra de escala quando fechada, para não haver frestas de subpixel
 const OVERLAP = 1.04;
 
