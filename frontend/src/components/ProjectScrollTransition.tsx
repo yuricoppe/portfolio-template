@@ -8,17 +8,17 @@ import { prefersReducedMotion, useRafScroll } from "@/lib/motion";
 import type { Project } from "@/lib/types";
 
 // Showcase dos projetos com "scroll transition" de máscara SVG
-// (Codrops/Hiro-kiii): o palco alto mantém um viewport sticky onde
-// cada projeto é uma camada fullscreen mascarada por uma grade de
-// células que abre linha a linha (cima → baixo, ordem horizontal
-// aleatória) conforme o scroll, revelando a camada sobre a anterior.
-// Textos entram/saem por clip-path e uma barra segmentada mostra o
-// progresso.
+// (Codrops/Hiro-kiii, variação "horizontal blinds"): o palco alto
+// mantém um viewport sticky onde cada projeto é uma camada fullscreen
+// mascarada por persianas horizontais — faixas de largura total que
+// abrem a partir da própria linha central, escalonadas de baixo para
+// cima conforme o scroll, revelando a camada sobre a anterior. Textos
+// entram/saem por clip-path e uma barra segmentada mostra o progresso.
 //
-// A grade vive em <mask> SVG (userSpaceOnUse, coordenadas em px do
-// viewport) aplicada à camada HTML via CSS `mask` — assim a camada
-// pode ter gradiente de fundo e <img>/<video> normais. Os estados
-// animados são gated por html.js em globals.css; sem JS ou com
+// As persianas vivem em <mask> SVG (coordenadas em px do viewport)
+// aplicada à camada HTML via CSS `mask` — assim a camada pode ter
+// gradiente de fundo e <img>/<video> normais. Os estados animados são
+// gated por html.js em globals.css; sem JS ou com
 // prefers-reduced-motion vale o fallback empilhado (.stx-fallback).
 
 const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
@@ -29,33 +29,23 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 // scroll dedicado a cada projeto dentro do palco
 const VH_PER_PROJECT = 120;
-// fração do segmento em que a grade termina de abrir
+// fração do segmento em que as persianas terminam de abrir
 const SWEEP_END = 0.55;
-// fração do sweep gasta escalonando o início das células; o restante
-// é a duração do fade de cada célula (equivale ao stagger do demo)
+// fração do sweep gasta escalonando o início das persianas; o restante
+// é a duração da abertura de cada uma (equivale ao stagger do demo)
 const STAGGER_SPREAD = 0.7;
 // janelas (em fração do segmento) da entrada e saída do texto
 const TEXT_IN: readonly [number, number] = [0.08, 0.5];
 const TEXT_OUT: readonly [number, number] = [0.82, 1];
 
-// mesma responsividade do demo: menos colunas em telas estreitas
-function gridCols() {
-  if (window.innerWidth <= 599) return 6;
-  if (window.innerWidth <= 1024) return 10;
-  return 14;
-}
+// mesma contagem do demo: faixas horizontais cobrindo o viewport
+const BLIND_COUNT = 30;
 
-function shuffle<T>(arr: T[]): T[] {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-interface Cell {
+interface Blind {
   el: SVGRectElement;
-  order: number; // 0..1, posição na varredura coluna a coluna
+  centerY: number; // linha central da faixa, em px
+  h: number; // altura total da faixa, em px
+  order: number; // 0..1, posição no stagger (base → topo)
 }
 
 const SVG_NS = "http://www.w3.org/2000/svg";
@@ -72,50 +62,43 @@ export default function ProjectScrollTransition({
   const groupRefs = useRef<(SVGGElement | null)[]>([]);
   const txtRefs = useRef<(HTMLDivElement | null)[]>([]);
   const fillRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const cellsRef = useRef<Cell[][]>([]);
+  const blindsRef = useRef<Blind[][]>([]);
 
-  // (re)constrói as grades de células em px do viewport
+  // (re)constrói as persianas em px do viewport
   useEffect(() => {
     if (prefersReducedMotion()) return;
 
     const build = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const cols = gridCols();
-      const rows = Math.max(1, Math.round(cols * (h / w)));
-      const cellW = w / cols;
-      const cellH = h / rows;
-      const total = cols * rows;
+      const blindH = h / BLIND_COUNT;
 
-      cellsRef.current = groupRefs.current.map((g, i) => {
+      blindsRef.current = groupRefs.current.map((g, i) => {
         baseRefs.current[i]?.setAttribute("width", String(w));
         baseRefs.current[i]?.setAttribute("height", String(h));
         if (!g) return [];
         g.innerHTML = "";
 
-        const cells: Cell[] = [];
-        let orderIdx = 0;
-        for (let y = 0; y < rows; y++) {
-          // linhas em ordem (cima → baixo), colunas embaralhadas na linha
-          const xs = shuffle(Array.from({ length: cols }, (_, x) => x));
-          for (const x of xs) {
-            const rect = document.createElementNS(SVG_NS, "rect");
-            rect.setAttribute("x", String(x * cellW));
-            rect.setAttribute("y", String(y * cellH));
-            rect.setAttribute("width", String(cellW));
-            rect.setAttribute("height", String(cellH));
-            rect.setAttribute("fill", "#fff");
-            rect.setAttribute("shape-rendering", "crispEdges");
-            rect.setAttribute("opacity", "0");
-            g.appendChild(rect);
-            cells.push({
-              el: rect,
-              order: total > 1 ? orderIdx / (total - 1) : 0,
-            });
-            orderIdx++;
-          }
+        const blinds: Blind[] = [];
+        // como no demo: a primeira faixa (order 0) é a de baixo
+        for (let j = 0; j < BLIND_COUNT; j++) {
+          const centerY = h - (j * blindH + blindH / 2);
+          const rect = document.createElementNS(SVG_NS, "rect");
+          rect.setAttribute("x", "0");
+          rect.setAttribute("y", String(centerY));
+          rect.setAttribute("width", String(w));
+          rect.setAttribute("height", "0");
+          rect.setAttribute("fill", "#fff");
+          rect.setAttribute("shape-rendering", "crispEdges");
+          g.appendChild(rect);
+          blinds.push({
+            el: rect,
+            centerY,
+            h: blindH,
+            order: BLIND_COUNT > 1 ? j / (BLIND_COUNT - 1) : 0,
+          });
         }
-        return cells;
+        return blinds;
       });
     };
 
@@ -132,7 +115,7 @@ export default function ProjectScrollTransition({
     };
   }, []);
 
-  // scrub: mapeia o progresso do palco para células, textos e barra
+  // scrub: mapeia o progresso do palco para persianas, textos e barra
   useRafScroll(() => {
     const stage = stageRef.current;
     if (!stage) return;
@@ -147,15 +130,22 @@ export default function ProjectScrollTransition({
       const t = clamp01(progress * n - i);
 
       const sweep = clamp01(t / SWEEP_END);
-      const cells = cellsRef.current[i];
-      if (cells) {
-        for (const cell of cells) {
-          const ct = clamp01(
-            (sweep - cell.order * STAGGER_SPREAD) / (1 - STAGGER_SPREAD),
+      const blinds = blindsRef.current[i];
+      if (blinds) {
+        for (const blind of blinds) {
+          const bt = clamp01(
+            (sweep - blind.order * STAGGER_SPREAD) / (1 - STAGGER_SPREAD),
           );
-          const op = easeOutCubic(ct).toFixed(3);
-          if (cell.el.getAttribute("opacity") !== op) {
-            cell.el.setAttribute("opacity", op);
+          // abre do centro para fora; +0.5px de sobra evita frestas
+          // entre faixas vizinhas (o demo soma 0.01 em user units)
+          const bh = easeOutCubic(bt) * blind.h;
+          const height = (bh > 0 ? bh + 0.5 : 0).toFixed(2);
+          if (blind.el.getAttribute("height") !== height) {
+            blind.el.setAttribute("height", height);
+            blind.el.setAttribute(
+              "y",
+              (blind.centerY - bh / 2).toFixed(2),
+            );
           }
         }
       }
@@ -223,7 +213,7 @@ export default function ProjectScrollTransition({
         ))}
 
         <div className="sticky top-0 h-screen overflow-hidden">
-          {/* máscaras (as células são criadas via JS no build da grade) */}
+          {/* máscaras (as persianas são criadas via JS no build) */}
           <svg aria-hidden className="absolute h-0 w-0">
             <defs>
               {/* sem maskUnits="userSpaceOnUse": no Chromium a região

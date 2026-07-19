@@ -517,8 +517,8 @@ textarea:focus {
 }
 
 /* ---------- Scroll transition dos projetos (máscara SVG) ----------
-   ProjectScrollTransition: camadas fullscreen mascaradas por uma grade
-   de células que abre com o scroll. Os estados animados (máscara e
+   ProjectScrollTransition: camadas fullscreen mascaradas por persianas
+   horizontais que abrem com o scroll. Os estados animados (máscara e
    clip dos textos) só se aplicam com JS ativo (html.js); sem JS o
    palco some e vale o fallback empilhado (.stx-fallback) — idem com
    prefers-reduced-motion (bloco no fim do arquivo). */
@@ -541,18 +541,19 @@ html:not(.js) .stx-fallback {
   transform: translateY(40px);
 }
 
-/* ---------- Transição de página (quadrados pretos) ----------
-   A troca de rota é comandada por PageTransition: uma grade de
-   quadrados pretos varre a tela de cima para baixo, cobre a troca do
-   DOM (navegação client comum, sem View Transitions) e revela a página
-   nova. Os quadrados aparecem/somem por opacidade, como as células da
-   máscara SVG dos cards. */
+/* ---------- Transição de página (persianas horizontais) ----------
+   A troca de rota é comandada por PageTransition: faixas pretas de
+   largura total crescem a partir da própria linha central (base
+   primeiro), cobrem a troca do DOM (navegação client comum, sem View
+   Transitions) e encolhem de volta revelando a página nova — mesma
+   estética das persianas da máscara SVG dos cards. */
 
 .pt-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   pointer-events: none;
 }
 .pt-overlay[data-phase="idle"] {
@@ -563,18 +564,20 @@ html:not(.js) .stx-fallback {
 .pt-overlay[data-phase="covered"] {
   pointer-events: auto;
 }
-/* mesma estética das células da máscara SVG dos cards: cada quadrado
-   aparece e some por opacidade (não por escala), escalonado topo→base */
-.pt-cell {
+/* cada faixa abre/fecha por scaleY a partir do centro; a sobra de
+   escala (1.05) evita frestas de subpixel entre faixas vizinhas */
+.pt-blind {
+  flex: 1;
+  width: 100%;
   background: #000;
-  opacity: 0;
-  transition-property: opacity;
-  transition-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
-  will-change: opacity;
+  transform: scaleY(0);
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform;
 }
-.pt-overlay[data-phase="cover"] .pt-cell,
-.pt-overlay[data-phase="covered"] .pt-cell {
-  opacity: 1;
+.pt-overlay[data-phase="cover"] .pt-blind,
+.pt-overlay[data-phase="covered"] .pt-blind {
+  transform: scaleY(1.05);
 }
 
 @media (prefers-reduced-motion: reduce) {

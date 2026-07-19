@@ -4,41 +4,36 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 
-// Transição de página: grade de quadrados pretos que varre a tela de
-// cima para baixo. Ao clicar num link interno, os quadrados aparecem
-// (por opacidade, linha a linha, topo primeiro) cobrindo o conteúdo; a
-// rota troca por trás da cobertura (com o scroll resetado ao topo,
-// invisível); então os quadrados somem na mesma ordem, revelando a
-// página nova. É a mesma estética das células da máscara SVG dos cards
-// (ProjectScrollTransition) — aparecendo/sumindo por opacidade — só que
-// com <div>s + CSS transitions em vez de <mask>.
+// Transição de página: persianas horizontais ("horizontal blinds",
+// Codrops/Hiro-kiii). Ao clicar num link interno, faixas pretas de
+// largura total crescem a partir da própria linha central (scaleY),
+// escalonadas de baixo para cima, cobrindo o conteúdo; a rota troca por
+// trás da cobertura (com o scroll resetado ao topo, invisível); então
+// as faixas encolhem de volta ao centro na mesma ordem, revelando a
+// página nova. É a mesma estética das persianas da máscara SVG dos
+// cards (ProjectScrollTransition) — só que com <div>s + CSS transitions
+// em vez de <mask>.
 //
 // É este componente que passa a comandar a navegação interna (o
 // SmoothScroll deixou de interceptar cliques). Sem JS os links navegam
-// nativamente; com prefers-reduced-motion a troca é direta, sem grade.
+// nativamente; com prefers-reduced-motion a troca é direta, sem faixas.
 
-const CELL_MS = 420; // duração da entrada/saída de cada quadrado
-const ROW_STAGGER = 34; // atraso por linha (topo primeiro), em ms
-const ROW_JITTER = 90; // aleatoriedade por quadrado dentro da linha, em ms
+const BLIND_COUNT = 24; // faixas horizontais cobrindo o viewport
+const BLIND_MS = 440; // duração da abertura/fechamento de cada faixa
+const STAGGER = 16; // atraso por faixa (base primeiro), em ms
 
-function gridCols() {
-  if (window.innerWidth <= 599) return 6;
-  if (window.innerWidth <= 1024) return 10;
-  return 12;
-}
+const COVER_MS = (BLIND_COUNT - 1) * STAGGER + BLIND_MS + 60;
 
 type Phase = "idle" | "cover" | "covered" | "reveal";
 
 export default function PageTransition() {
   const pathname = usePathname();
   const router = useRouter();
-  const [cols, setCols] = useState(12);
-  const [delays, setDelays] = useState<number[]>([]);
+  const [enabled, setEnabled] = useState(false);
   const [phase, setPhase] = useState<Phase>("idle");
 
   const phaseRef = useRef<Phase>("idle");
   const targetRef = useRef<string | null>(null);
-  const coverMsRef = useRef(700);
   const firstRender = useRef(true);
 
   const setP = (p: Phase) => {
@@ -46,40 +41,8 @@ export default function PageTransition() {
     setPhase(p);
   };
 
-  // (re)monta a grade de quadrados cobrindo o viewport; guarda o atraso
-  // de cada célula e quanto dura a varredura inteira (coverMs)
   useEffect(() => {
-    if (prefersReducedMotion()) return;
-    const build = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const c = gridCols();
-      const cell = w / c;
-      const rows = Math.max(1, Math.ceil(h / cell));
-      const next: number[] = [];
-      let maxDelay = 0;
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < c; x++) {
-          const delay = y * ROW_STAGGER + Math.random() * ROW_JITTER;
-          maxDelay = Math.max(maxDelay, delay);
-          next.push(delay);
-        }
-      }
-      coverMsRef.current = maxDelay + CELL_MS + 60;
-      setCols(c);
-      setDelays(next);
-    };
-    build();
-    let t = 0;
-    const onResize = () => {
-      window.clearTimeout(t);
-      t = window.setTimeout(build, 250);
-    };
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      window.clearTimeout(t);
-    };
+    if (!prefersReducedMotion()) setEnabled(true);
   }, []);
 
   // máquina de fases: cover -> (navega) -> covered -> reveal -> idle
@@ -89,17 +52,17 @@ export default function PageTransition() {
         window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
         setP("covered");
         if (targetRef.current) router.push(targetRef.current);
-      }, coverMsRef.current);
+      }, COVER_MS);
       return () => window.clearTimeout(t);
     }
     if (phase === "reveal") {
-      const t = window.setTimeout(() => setP("idle"), coverMsRef.current);
+      const t = window.setTimeout(() => setP("idle"), COVER_MS);
       return () => window.clearTimeout(t);
     }
   }, [phase, router]);
 
   // página nova montada sob a cobertura -> revela (dois rAF garantem
-  // que o conteúdo novo pintou antes dos quadrados começarem a sair)
+  // que o conteúdo novo pintou antes das faixas começarem a abrir)
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -137,26 +100,18 @@ export default function PageTransition() {
     return () => document.removeEventListener("click", onClick, true);
   }, [pathname]);
 
-  if (delays.length === 0) return null;
-  const rows = Math.round(delays.length / cols);
+  if (!enabled) return null;
 
   return (
-    <div
-      aria-hidden
-      data-phase={phase}
-      className="pt-overlay"
-      style={{
-        gridTemplateColumns: `repeat(${cols}, 1fr)`,
-        gridTemplateRows: `repeat(${rows}, 1fr)`,
-      }}
-    >
-      {delays.map((delay, i) => (
+    <div aria-hidden data-phase={phase} className="pt-overlay">
+      {Array.from({ length: BLIND_COUNT }, (_, i) => (
         <span
           key={i}
-          className="pt-cell"
+          className="pt-blind"
           style={{
-            transitionDuration: `${CELL_MS}ms`,
-            transitionDelay: `${delay}ms`,
+            transitionDuration: `${BLIND_MS}ms`,
+            // base primeiro, como o stagger do demo
+            transitionDelay: `${(BLIND_COUNT - 1 - i) * STAGGER}ms`,
           }}
         />
       ))}
