@@ -183,8 +183,8 @@ textarea:focus {
   transition: width 0.25s ease, height 0.25s ease, opacity 0.3s ease;
 }
 .cursor-dot--active {
-  width: 4px;
-  height: 4px;
+  width: 16px;
+  height: 16px;
 }
 
 .cursor-ring {
@@ -195,9 +195,9 @@ textarea:focus {
     border-color 0.3s ease;
 }
 .cursor-ring--active {
-  width: 52px;
-  height: 52px;
-  border-color: #fff;
+  width: 48px;
+  height: 48px;
+  border-color: solid #fff;
 }
 
 /* ---------- Reveal on scroll ----------
