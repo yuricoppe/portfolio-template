@@ -243,6 +243,9 @@ textarea:focus {
 
 /* ---------- Peso por proximidade (fonte variável) ---------- */
 
+.wf-word {
+  display: inline-block;
+}
 .wf-char {
   display: inline-block;
   transition: font-variation-settings 0.25s cubic-bezier(0.22, 1, 0.36, 1);

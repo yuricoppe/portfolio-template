@@ -27,6 +27,13 @@ export function useWeightHover(
     const baseWeight =
       parseInt(getComputedStyle(el).fontWeight, 10) || 400;
 
+    // Trava a largura de cada letra no tamanho do peso base: sem isso,
+    // o engrossamento no hover alarga o glifo, empurra as letras
+    // seguintes e reflui a palavra (às vezes pra outra linha).
+    for (const span of spans) {
+      span.style.width = `${span.getBoundingClientRect().width}px`;
+    }
+
     let raf = 0;
     let lastEvent: PointerEvent | null = null;
 
@@ -77,18 +84,28 @@ export function useWeightHover(
   }, [ref, radius, maxWeight]);
 }
 
-// Divide um texto em spans .wf-char (um por caractere), preservando
-// espaços fora dos spans para o line-wrap natural.
+// Divide um texto em palavras (.wf-word, inline-block) e cada palavra em
+// spans .wf-char por caractere. Agrupar por palavra garante que a quebra
+// de linha só aconteça no espaço vazio entre palavras, nunca no meio de
+// uma palavra.
 export function weightChars(text: string) {
-  return text.split("").map((c, i) =>
-    c === " " ? (
-      " "
-    ) : (
-      <span key={i} aria-hidden className="wf-char">
-        {c}
-      </span>
-    ),
-  );
+  const words = text.split(" ");
+  const nodes: React.ReactNode[] = [];
+  words.forEach((word, wi) => {
+    nodes.push(
+      <span key={`w-${wi}`} className="wf-word">
+        {word.split("").map((c, ci) => (
+          <span key={ci} aria-hidden className="wf-char">
+            {c}
+          </span>
+        ))}
+      </span>,
+    );
+    // espaço fora do .wf-word: dentro dele seria colapsado no fim da
+    // caixa inline-block (sem white-space: pre-wrap como em .blur-word)
+    if (wi < words.length - 1) nodes.push(" ");
+  });
+  return nodes;
 }
 
 // Texto com o efeito de engrossar próximo ao cursor.
