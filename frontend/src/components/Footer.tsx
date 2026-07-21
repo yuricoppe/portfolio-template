@@ -13,7 +13,6 @@ export default function Footer({ global }: { global: Global }) {
     // persianas horizontais do FooterReveal.
     <footer
       data-light-section
-      data-toc="Contato"
       className="sticky bottom-0 overflow-hidden bg-paper px-page pb-12 pt-24 text-[#0a0a0a] md:pt-40"
     >
       <FooterReveal />

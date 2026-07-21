@@ -200,18 +200,6 @@ export default function ProjectScrollTransition({
         className="stx-stage relative"
         style={{ height: `${projects.length * VH_PER_PROJECT + 100}vh` }}
       >
-        {/* marcadores invisíveis no início do segmento de cada projeto,
-            para o table of contents da scrollbar */}
-        {projects.map((p, i) => (
-          <div
-            key={p.slug}
-            data-toc={p.title}
-            aria-hidden
-            className="absolute h-px w-px"
-            style={{ top: `${i * VH_PER_PROJECT}vh` }}
-          />
-        ))}
-
         <div className="sticky top-0 h-screen overflow-hidden">
           {/* máscaras (as persianas são criadas via JS no build) */}
           <svg aria-hidden className="absolute h-0 w-0">

@@ -81,7 +81,7 @@ export default function SmoothScroll() {
       }
     };
 
-    // scroll vindo de fora com o loop parado (drag da scrollbar, ToC,
+    // scroll vindo de fora com o loop parado (drag da scrollbar,
     // teclado, âncoras): re-sincroniza o alvo para não puxar de volta
     const onScroll = () => {
       if (!animating) target = window.scrollY;

@@ -28,7 +28,7 @@ export default async function Home() {
       {/* conteúdo acima do footer sticky (reveal no fim do scroll) */}
       <div className="relative z-10 bg-ink">
       {/* Hero (wrapper sem overflow para a seta atravessar a divisa) */}
-      <div className="relative" data-toc="Início">
+      <div className="relative">
         <div
           className="relative min-h-[560px] overflow-hidden md:min-h-[720px]"
           style={{ height: "92vh", background: home.heroGradient }}
@@ -52,7 +52,7 @@ export default async function Home() {
       </div>
 
       {/* Statement + sticky featured cases */}
-      <div className="box-border" data-toc="Cases">
+      <div className="box-border">
         <div className="sticky top-0 px-page pb-24 pt-24 md:pb-[120px] md:pt-[130px]">
           <ScrollRevealText
             as="h1"
@@ -100,10 +100,7 @@ export default async function Home() {
       </div>
 
       {/* Services */}
-      <div
-        data-toc="Serviços"
-        className="grid grid-cols-1 gap-10 px-page py-24 md:grid-cols-2 md:gap-[60px] md:py-[150px]"
-      >
+      <div className="grid grid-cols-1 gap-10 px-page py-24 md:grid-cols-2 md:gap-[60px] md:py-[150px]">
         <Reveal>
           <h2 className="text-3xl font-medium leading-[1.2] tracking-tight md:text-[40px]">
             <WeightText text={home.servicesLead} />
