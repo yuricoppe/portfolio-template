@@ -27,11 +27,20 @@ export function useWeightHover(
     const baseWeight =
       parseInt(getComputedStyle(el).fontWeight, 10) || 400;
 
-    // Trava a largura de cada letra no tamanho do peso base: sem isso,
-    // o engrossamento no hover alarga o glifo, empurra as letras
-    // seguintes e reflui a palavra (às vezes pra outra linha).
+    // Trava a largura de cada letra no tamanho do peso MÁXIMO (não do
+    // peso base): sem travar, o engrossamento no hover alarga o glifo,
+    // empurra as letras seguintes e reflui a palavra. E travar no peso
+    // base faz o glifo sempre transbordar a caixa ao engrossar — nesse
+    // caso o Chrome ignora text-align:center (só centraliza conteúdo
+    // que cabe na caixa) e a letra cresce só para a direita. Travando
+    // no peso máximo o glifo nunca transborda, então a centralização
+    // funciona de verdade em todo o intervalo do hover.
     for (const span of spans) {
-      span.style.width = `${span.getBoundingClientRect().width}px`;
+      const restore = span.style.fontVariationSettings;
+      span.style.fontVariationSettings = `"wght" ${maxWeight}`;
+      const w = span.getBoundingClientRect().width;
+      span.style.fontVariationSettings = restore;
+      span.style.width = `${w}px`;
     }
 
     let raf = 0;

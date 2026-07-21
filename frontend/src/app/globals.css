@@ -183,6 +183,9 @@ textarea:focus {
 }
 .wf-char {
   display: inline-block;
+  /* a largura fica travada via JS (useWeightHover); centralizar o
+     texto faz o glifo mais grosso crescer do centro, não da esquerda */
+  text-align: center;
   transition: font-variation-settings 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
