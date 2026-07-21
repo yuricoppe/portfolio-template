@@ -14,7 +14,7 @@ export interface WeightHoverOptions {
 // transition de font-variation-settings no CSS (.wf-char).
 export function useWeightHover(
   ref: React.RefObject<HTMLElement | null>,
-  { radius = 100, maxWeight = 800 }: WeightHoverOptions = {},
+  { radius = 100, maxWeight = 900 }: WeightHoverOptions = {},
 ) {
   useEffect(() => {
     const el = ref.current;
